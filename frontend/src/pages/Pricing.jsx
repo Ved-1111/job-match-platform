@@ -47,7 +47,7 @@ const Pricing = () => {
             <button className="plan-btn green" onClick={() => navigate('/login')}>Create free profile &rarr;</button>
           </div>
 
-          <div className="plan-card featured">
+          <div className="plan-card">
             <div className="plan-type recruiter">Recruiter</div>
             <div className="plan-name">Recruiter Plan</div>
             <div className="plan-price">
