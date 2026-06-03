@@ -48,7 +48,6 @@ const Pricing = () => {
           </div>
 
           <div className="plan-card featured">
-            <div className="featured-badge">Most popular</div>
             <div className="plan-type recruiter">Recruiter</div>
             <div className="plan-name">Recruiter Plan</div>
             <div className="plan-price">
