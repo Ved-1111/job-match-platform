@@ -22,7 +22,7 @@ const TECH_SKILLS = [
   "TensorFlow", "Terraform", "Travis CI", "Trello", "TypeScript", "UI/UX Design", "Vercel", "Vue.js", "Web3", "WebSockets"
 ];
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const SeekerPortal = () => {
   const { token, user, logout } = useAuthStore();

@@ -5,7 +5,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 
 // Note: For local dev, hardcoding backend URL. Use env vars in prod.
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);

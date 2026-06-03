@@ -33,7 +33,7 @@ const TECH_JOB_TITLES = [
   "Technical Lead", "UI/UX Designer"
 ];
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const RecruiterPortal = () => {
   const { token, user, logout } = useAuthStore();
