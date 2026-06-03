@@ -17,10 +17,12 @@ router.get('/', protect, async (req, res) => {
 // Update profile (skills, resume, contact info)
 router.put('/', protect, async (req, res) => {
   try {
-    const { skills, resumeUrl, experienceLevel, companyName } = req.body;
+    const { skills, resumeUrl, experienceLevel, companyName, profilePicture } = req.body;
     const user = await User.findById(req.user.userId);
     
     if (!user) return res.status(404).json({ message: 'User not found' });
+
+    if (profilePicture) user.profilePicture = profilePicture;
 
     if (user.role === 'seeker') {
       if (skills) user.skills = skills;

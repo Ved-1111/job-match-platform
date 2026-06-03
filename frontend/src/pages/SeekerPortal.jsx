@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
-import { Bell, Lock, Unlock, UserCircle, Briefcase, Settings, LogOut, CheckCircle2, X } from 'lucide-react';
+import { Bell, Lock, Unlock, UserCircle, Briefcase, Settings, LogOut, CheckCircle2, X, Plus } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import PaymentModal from '../components/PaymentModal';
 
@@ -47,13 +47,27 @@ const SeekerPortal = () => {
   });
 
   const updateProfile = useMutation({
-    mutationFn: (newSkills) => api.put('/profile', { skills: newSkills }),
+    mutationFn: (payload) => api.put('/profile', payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       setSelectedSkill('');
       setCustomSkill('');
     }
   });
+
+  const handleProfilePicUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      alert('Only PNG or JPG files are allowed');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      updateProfile.mutate({ profilePicture: event.target.result });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const payForMatch = useMutation({
     mutationFn: async (matchId) => {
@@ -76,12 +90,12 @@ const SeekerPortal = () => {
       return;
     }
     const combinedSkills = [...(profile?.skills || []), skillToAdd];
-    updateProfile.mutate(combinedSkills);
+    updateProfile.mutate({ skills: combinedSkills });
   };
 
   const handleDeleteSkill = (skillToRemove) => {
     const newSkills = profile?.skills?.filter(s => s !== skillToRemove) || [];
-    updateProfile.mutate(newSkills);
+    updateProfile.mutate({ skills: newSkills });
   };
 
   const [expandedContacts, setExpandedContacts] = useState({});
@@ -103,7 +117,17 @@ const SeekerPortal = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                <UserCircle size={48} color="var(--brand-blue)" />
+                <div style={{ position: 'relative', width: 48, height: 48 }}>
+                  {profile?.profilePicture ? (
+                    <img src={profile.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+                  ) : (
+                    <UserCircle size={48} color="var(--brand-blue)" />
+                  )}
+                  <label style={{ position: 'absolute', bottom: -4, right: -4, background: 'var(--brand-blue)', color: 'white', borderRadius: '50%', padding: '2px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                    <Plus size={12} strokeWidth={3} />
+                    <input type="file" accept="image/png, image/jpeg" style={{ display: 'none' }} onChange={handleProfilePicUpload} />
+                  </label>
+                </div>
                 <div>
                   <h4 style={{ margin: 0 }}>{user?.name}</h4>
                   <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Job Seeker</p>

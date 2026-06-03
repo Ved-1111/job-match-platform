@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
   resumeUrl: {
     type: String,
   },
+  profilePicture: {
+    type: String,
+  },
   experienceLevel: {
     type: String,
     enum: ['Entry', 'Mid', 'Senior', 'Executive'],
