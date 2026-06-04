@@ -14,7 +14,7 @@ app.use(cors({
   origin: [
     'https://job-match-platform-xi.vercel.app', 
     'https://job-match-platform-wine.vercel.app',
-    'https://hirebridge.vercel.app',
+    'https://gohirebridge.vercel.app',
     'http://localhost:5173'
   ] 
 }));
