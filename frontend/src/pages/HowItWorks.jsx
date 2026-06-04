@@ -121,7 +121,7 @@ const HowItWorks = () => {
 
       <hr className="divider" />
 
-      <section className="matching" data-aos="fade-up" data-aos-once="false">
+      <section className="matching" data-aos="fade-up" data-aos-once="false" data-aos-mirror="true">
         <div className="matching-inner">
           <div className="section-label">The matching engine</div>
           <h2 className="section-h2">How we calculate your match score</h2>
