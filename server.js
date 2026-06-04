@@ -4,7 +4,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
-require('./services/matchService'); // Start background cron job
 
 const app = express();
 
@@ -37,6 +36,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/job-match'
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
+    require('./services/matchService'); // Start background cron job only after DB connects
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => console.error('MongoDB connection error:', err));
