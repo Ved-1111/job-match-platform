@@ -57,7 +57,7 @@ const PaymentModal = ({ isOpen, onClose, onConfirm, amount }) => {
               Pay Securely
             </button>
             <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
-              <Lock size={12} /> Dummy Payment Gateway (Test Mode)
+              <Lock size={12} /> Secured by Razorpay
             </p>
           </div>
         )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, CheckCircle, TrendingUp } from 'lucide-react';
+import { Search, CheckCircle, TrendingUp, User, Building2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import './HowItWorks.css';
 
@@ -187,13 +187,13 @@ const HowItWorks = () => {
         <p className="section-sub">Both sides pay independently to unlock contact details. Neither party can see the other's information until they choose to pay.</p>
         <div className="pay-grid">
           <div className="pay-card">
-            <h3>👤 Job Seekers</h3>
+            <h3><User size={20} /> Job Seekers</h3>
             <p>Pay once to unlock a recruiter's contact details. You decide which matches are worth pursuing — there's no pressure and no subscription.</p>
             <div className="pay-amount">₹99 <span>per unlock</span></div>
             <div className="pay-note">One-time &middot; Secure via Razorpay</div>
           </div>
           <div className="pay-card">
-            <h3>🏢 Recruiters</h3>
+            <h3><Building2 size={20} /> Recruiters</h3>
             <p>Pay once per candidate you want to contact. Since you see match scores before paying, you only spend on candidates you're already confident about.</p>
             <div className="pay-amount">₹199 <span>per unlock</span></div>
             <div className="pay-note">One-time &middot; Secure via Razorpay</div>
@@ -208,7 +208,7 @@ const HowItWorks = () => {
 
           <div className="faq-item">
             <div className="faq-q">Can the other party see my details before I pay?</div>
-            <div class="faq-a">No. Your contact information is hidden until you choose to unlock a connection. The other party has to pay independently on their end to see your details too.</div>
+            <div className="faq-a">No. Your contact information is hidden until you choose to unlock a connection. The other party has to pay independently on their end to see your details too.</div>
           </div>
           <div className="faq-item">
             <div className="faq-q">What if I unlock a contact but they don't respond?</div>

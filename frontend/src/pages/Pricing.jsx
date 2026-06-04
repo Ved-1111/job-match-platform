@@ -39,7 +39,7 @@ const Pricing = () => {
             <ul className="plan-features">
               <li><span className="check">✓</span> Free profile creation</li>
               <li><span className="check">✓</span> Automatic skill-based matching</li>
-              <li><span class="check">✓</span> Unlimited match browsing</li>
+              <li><span className="check">✓</span> Unlimited match browsing</li>
               <li><span className="check">✓</span> Match score visible before paying</li>
               <li><span className="check">✓</span> Recruiter contact revealed on unlock</li>
               <li><span className="check">✓</span> No subscription or monthly fees</li>

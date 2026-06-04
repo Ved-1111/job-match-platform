@@ -1,0 +1,129 @@
+.login-page-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+
+.login-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.login-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  font-family: 'DM Serif Display', serif;
+}
+
+.login-header p {
+  color: var(--text-muted);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+}
+
+.login-card h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.login-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.login-success {
+  background: #dcfce7;
+  color: #166534;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.login-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.login-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+
+.login-btn-submit {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.875rem;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.login-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.login-divider-text {
+  padding: 0 10px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.btn-google {
+  width: 100%;
+  padding: 0.875rem;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 99px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.btn-google:hover {
+  background: #f9fafb;
+}
+
+.login-footer-text {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.login-link {
+  color: var(--brand-blue);
+  cursor: pointer;
+  font-weight: 500;
+}

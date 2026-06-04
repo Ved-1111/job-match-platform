@@ -4,6 +4,7 @@ import useAuthStore from '../store/useAuthStore';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 import Navbar from '../components/Navbar';
+import './Login.css';
 
 // Note: For local dev, hardcoding backend URL. Use env vars in prod.
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
@@ -30,14 +31,13 @@ const Login = () => {
           const res = await axios.post(`${API_URL}/auth/send-otp`, { email: formData.email });
           setSuccessMsg(res.data.message);
           if (res.data.previewUrl) {
-            console.log("OTP Email Link:", res.data.previewUrl);
-            alert("Development Mode: Your email provider isn't set up yet, so we sent the OTP to a test mailbox! Check the Browser Console for the link, or copy this: \n\n" + res.data.previewUrl);
+            setSuccessMsg(`OTP sent! (Test Mode: Check Ethereal Mail - ${res.data.previewUrl})`);
           }
           setStep(2);
         } else if (step === 2) {
           // Complete Registration
           await axios.post(`${API_URL}/auth/register`, { ...formData, otp });
-          alert('Registration successful! Please login.');
+          setSuccessMsg('Registration successful! Please log in.');
           setIsRegistering(false);
           setStep(1);
           setOtp('');
@@ -81,37 +81,37 @@ const Login = () => {
   });
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--surface)' }}>
+    <div className="login-page-wrap">
       <Navbar />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', margin: 0, fontFamily: "'DM Serif Display', serif" }}>
+      <div className="login-content">
+        <div className="login-header">
+          <h1>
             Hire<span style={{ color: 'var(--brand-blue)' }}>Bridge</span>
           </h1>
-          <p style={{ color: 'var(--text-muted)' }}>Sign in to continue to your dashboard</p>
+          <p>Sign in to continue to your dashboard</p>
         </div>
 
-      <div className="card" style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }} data-aos="fade-up">
-        <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+      <div className="card login-card" data-aos="fade-up">
+        <h2>
           {isRegistering ? 'Create Account' : 'Welcome Back'}
         </h2>
         
         {error && (
-          <div style={{ background: '#fee2e2', color: '#b91c1c', padding: '0.75rem', borderRadius: '6px', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+          <div className="login-error">
             {error}
           </div>
         )}
 
         {successMsg && (
-          <div style={{ background: '#dcfce7', color: '#166534', padding: '0.75rem', borderRadius: '6px', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+          <div className="login-success">
             {successMsg}
           </div>
         )}
         
         <form onSubmit={handleSubmit}>
           {isRegistering && step === 2 ? (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Enter OTP sent to {formData.email}</label>
+            <div className="login-form-group">
+              <label className="login-label">Enter OTP sent to {formData.email}</label>
               <input 
                 type="text" 
                 placeholder="6-digit code" 
@@ -124,8 +124,8 @@ const Login = () => {
             <>
               {isRegistering && (
                 <>
-                  <div>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Full Name</label>
+                  <div className="login-form-group">
+                <label className="login-label">Full Name</label>
                 <input 
                   type="text" 
                   placeholder="e.g. John Doe" 
@@ -134,8 +134,8 @@ const Login = () => {
                   required 
                 />
               </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Account Type</label>
+              <div className="login-form-group">
+                <label className="login-label">Account Type</label>
                 <select 
                   value={formData.role} 
                   onChange={e => setFormData({...formData, role: e.target.value})}
@@ -145,8 +145,8 @@ const Login = () => {
                 </select>
               </div>
               {formData.role === 'recruiter' && (
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Company Name</label>
+                <div className="login-form-group">
+                  <label className="login-label">Company Name</label>
                   <input 
                     type="text" 
                     placeholder="e.g. Google, Inc." 
@@ -159,8 +159,8 @@ const Login = () => {
             </>
           )}
               
-          <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Email Address</label>
+          <div className="login-form-group">
+            <label className="login-label">Email Address</label>
                 <input 
                   type="email" 
                   placeholder="you@example.com" 
@@ -169,8 +169,8 @@ const Login = () => {
                   required 
                 />
               </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Password</label>
+              <div className="login-form-group">
+                <label className="login-label">Password</label>
                 <input 
                   type="password" 
                   placeholder="••••••••" 
@@ -182,20 +182,20 @@ const Login = () => {
             </>
           )}
           
-          <button type="submit" className="btn" style={{ width: '100%', marginTop: '1.5rem', padding: '0.875rem' }}>
+          <button type="submit" className="btn login-btn-submit">
             {isRegistering 
               ? (step === 1 ? 'Send Verification OTP' : 'Verify & Register') 
               : 'Log In with Email'}
           </button>
         </form>
 
-        <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0' }}>
-          <div style={{ flex: 1, height: '1px', background: '#e5e7eb' }}></div>
-          <div style={{ padding: '0 10px', color: '#6b7280', fontSize: '0.875rem' }}>OR</div>
-          <div style={{ flex: 1, height: '1px', background: '#e5e7eb' }}></div>
+        <div className="login-divider">
+          <div className="login-divider-line"></div>
+          <div className="login-divider-text">OR</div>
+          <div className="login-divider-line"></div>
         </div>
 
-        <button type="button" onClick={handleGoogleLogin} style={{ width: '100%', padding: '0.875rem', background: '#fff', border: '1px solid #d1d5db', color: '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', borderRadius: '99px', cursor: 'pointer', fontWeight: 600, fontSize: '0.875rem', transition: 'background 0.2s' }}>
+        <button type="button" onClick={handleGoogleLogin} className="btn-google">
           <svg width="20" height="20" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
             <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -205,10 +205,10 @@ const Login = () => {
           Continue with Google
         </button>
         
-        <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
+        <p className="login-footer-text">
           {isRegistering ? "Already have an account? " : "Don't have an account? "}
           <span 
-            style={{ color: 'var(--brand-blue)', cursor: 'pointer', fontWeight: 500 }}
+            className="login-link"
             onClick={() => {
               setIsRegistering(!isRegistering);
               setStep(1);

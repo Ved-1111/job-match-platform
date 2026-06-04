@@ -45,7 +45,7 @@ function App() {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId="799535285735-0i1hnsr9gphl510fqd6vieprq40f0fc9.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "799535285735-0i1hnsr9gphl510fqd6vieprq40f0fc9.apps.googleusercontent.com"}>
       <BrowserRouter>
         <Toaster position="top-center" />
         <Routes>
