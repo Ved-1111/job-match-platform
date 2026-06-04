@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
 import { Building, Lock, CheckCircle2, PlusCircle, Users, LogOut, Bell, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import PaymentModal from '../components/PaymentModal';
 
@@ -34,6 +35,26 @@ const TECH_JOB_TITLES = [
 ];
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+const MatchRing = ({ score }) => {
+  const radius = 20;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (score / 100) * circumference;
+  const isHighMatch = score >= 80;
+  const color = isHighMatch ? 'var(--match-green)' : '#b45309';
+
+  return (
+    <div style={{ position: 'relative', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg width="50" height="50" style={{ transform: 'rotate(-90deg)', position: 'absolute' }}>
+        <circle cx="25" cy="25" r={radius} stroke="#e5e7eb" strokeWidth="4" fill="none" />
+        <circle cx="25" cy="25" r={radius} stroke={color} strokeWidth="4" fill="none" 
+          strokeDasharray={circumference} strokeDashoffset={offset} 
+          style={{ transition: 'stroke-dashoffset 1s ease-in-out' }} strokeLinecap="round" />
+      </svg>
+      <span style={{ fontSize: '12px', fontWeight: 700, color }}>{Math.round(score)}%</span>
+    </div>
+  );
+};
 
 const RecruiterPortal = () => {
   const { token, user, logout } = useAuthStore();
@@ -71,6 +92,7 @@ const RecruiterPortal = () => {
       setJobForm({ title: '', requiredSkills: [], salaryRange: '', location: '', jobType: 'Full-time' });
       setCustomJobTitle('');
       setShowPostForm(false);
+      toast.success('Job published successfully!');
     }
   });
 
@@ -99,6 +121,7 @@ const RecruiterPortal = () => {
       queryClient.invalidateQueries({ queryKey: ['myJobs'] });
       // Invalidate matches too, since deleting a job should theoretically clean up its matches
       queryClient.invalidateQueries({ queryKey: ['recruiterMatches'] });
+      toast.success('Job deleted successfully!');
     }
   });
 
@@ -109,19 +132,20 @@ const RecruiterPortal = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['recruiterMatches'] });
+      toast.success('Contact unlocked successfully!');
     }
   });
 
   const handleCreateJob = (e) => {
     e.preventDefault();
     if (jobForm.requiredSkills.length === 0) {
-      alert("Please add at least one required skill.");
+      toast.error("Please add at least one required skill.");
       return;
     }
     
     const finalTitle = jobForm.title === 'Custom' ? customJobTitle.trim() : jobForm.title;
     if (!finalTitle) {
-      alert("Please provide a job title.");
+      toast.error("Please provide a job title.");
       return;
     }
     
@@ -258,13 +282,7 @@ const RecruiterPortal = () => {
                           </div>
                           
                           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
-                            <div style={{ 
-                              background: isHighMatch ? '#dcfce7' : '#fef3c7', 
-                              color: isHighMatch ? 'var(--match-green)' : '#b45309',
-                              padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.875rem', fontWeight: 600
-                            }}>
-                              {Math.round(match.matchScore)}% match
-                            </div>
+                            <MatchRing score={match.matchScore} />
 
                             {match.contactLocked ? (
                               <button className="btn btn-amber" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }} onClick={() => setPaymentModal({ isOpen: true, matchId: match._id })} disabled={payForMatch.isPending}>

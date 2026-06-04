@@ -11,7 +11,7 @@ const Home = () => {
       <Navbar />
 
       {/* Hero */}
-      <div className="home-hero">
+      <div className="home-hero" data-aos="fade-up">
         <div className="home-hero-eyebrow">🎯 Skill-based job matching</div>
         <h1>The bridge between <em>talent</em> and opportunity</h1>
         <p>HireBridge matches job seekers to recruiters by skills — not resumes. Connect directly, pay only when it counts.</p>
@@ -28,7 +28,7 @@ const Home = () => {
       </div>
 
       {/* Problems we solve */}
-      <section className="problems">
+      <section className="problems" data-aos="fade-up">
         <div className="section-eyebrow">Why HireBridge exists</div>
         <h2 className="section-h2">Hiring is broken. We fixed it.</h2>
         <p className="section-sub">The same frustrations, on both sides. HireBridge was built to solve all of them.</p>
@@ -73,7 +73,7 @@ const Home = () => {
       </section>
 
       {/* For who */}
-      <section className="for-who">
+      <section className="for-who" data-aos="fade-up">
         <div className="for-who-inner">
           <div className="section-eyebrow">Who it's for</div>
           <h2 className="section-h2">Built for both sides</h2>
@@ -108,7 +108,7 @@ const Home = () => {
       </section>
 
       {/* HireBridge vs Traditional */}
-      <section className="vs">
+      <section className="vs" data-aos="fade-up">
         <div className="section-eyebrow">The difference</div>
         <h2 className="section-h2">HireBridge vs traditional job boards</h2>
         <p className="section-sub">See exactly what makes us different from the platforms you've used before.</p>
@@ -135,7 +135,7 @@ const Home = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="testimonials">
+      <section className="testimonials" data-aos="fade-up">
         <div className="testimonials-inner">
           <div className="section-eyebrow">Testimonials</div>
           <h2 className="section-h2">What people are saying</h2>
@@ -167,7 +167,7 @@ const Home = () => {
       </section>
 
       {/* Trusted by */}
-      <section className="trust">
+      <section className="trust" data-aos="fade-in">
         <div className="trust-label">Talent from companies like</div>
         <div className="trust-logos">
           <div className="trust-logo">Zepto</div>
@@ -180,7 +180,7 @@ const Home = () => {
       </section>
 
       {/* Final CTA */}
-      <div className="home-cta-block">
+      <div className="home-cta-block" data-aos="fade-up">
         <h2>Your next opportunity is <em>already waiting</em></h2>
         <p>Join thousands of professionals and recruiters already connecting on HireBridge.</p>
         <div className="cta-btns">

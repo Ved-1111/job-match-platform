@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import useAuthStore from './store/useAuthStore';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -34,8 +37,13 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 function App() {
   const { token } = useAuthStore();
 
+  useEffect(() => {
+    AOS.init({ duration: 800, once: true });
+  }, []);
+
   return (
     <BrowserRouter>
+      <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

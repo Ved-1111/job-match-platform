@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
 import { Bell, Lock, Unlock, UserCircle, Briefcase, Settings, LogOut, CheckCircle2, X, Plus } from 'lucide-react';
+import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import PaymentModal from '../components/PaymentModal';
 
@@ -23,6 +24,26 @@ const TECH_SKILLS = [
 ];
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+const MatchRing = ({ score }) => {
+  const radius = 20;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (score / 100) * circumference;
+  const isHighMatch = score >= 80;
+  const color = isHighMatch ? 'var(--match-green)' : '#b45309';
+
+  return (
+    <div style={{ position: 'relative', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <svg width="50" height="50" style={{ transform: 'rotate(-90deg)', position: 'absolute' }}>
+        <circle cx="25" cy="25" r={radius} stroke="#e5e7eb" strokeWidth="4" fill="none" />
+        <circle cx="25" cy="25" r={radius} stroke={color} strokeWidth="4" fill="none" 
+          strokeDasharray={circumference} strokeDashoffset={offset} 
+          style={{ transition: 'stroke-dashoffset 1s ease-in-out' }} strokeLinecap="round" />
+      </svg>
+      <span style={{ fontSize: '12px', fontWeight: 700, color }}>{Math.round(score)}%</span>
+    </div>
+  );
+};
 
 const SeekerPortal = () => {
   const { token, user, logout } = useAuthStore();
@@ -52,6 +73,7 @@ const SeekerPortal = () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       setSelectedSkill('');
       setCustomSkill('');
+      toast.success('Profile updated successfully!');
     }
   });
 
@@ -59,7 +81,7 @@ const SeekerPortal = () => {
     const file = e.target.files[0];
     if (!file) return;
     if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-      alert('Only PNG or JPG files are allowed');
+      toast.error('Only PNG or JPG files are allowed');
       return;
     }
     const reader = new FileReader();
@@ -76,6 +98,7 @@ const SeekerPortal = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['matches'] });
+      toast.success('Contact unlocked successfully!');
     }
   });
 
@@ -245,13 +268,7 @@ const SeekerPortal = () => {
                       </div>
                       
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
-                        <div style={{ 
-                          background: isHighMatch ? '#dcfce7' : '#fef3c7', 
-                          color: isHighMatch ? 'var(--match-green)' : '#b45309',
-                          padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.875rem', fontWeight: 600
-                        }}>
-                          {Math.round(match.matchScore)}% match
-                        </div>
+                        <MatchRing score={match.matchScore} />
 
                         {match.contactLocked ? (
                           <button className="btn btn-amber" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }} onClick={() => setPaymentModal({ isOpen: true, matchId: match._id })} disabled={payForMatch.isPending}>
