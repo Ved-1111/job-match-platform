@@ -60,7 +60,7 @@ router.post('/google', async (req, res) => {
     const { token, role, companyName } = req.body;
     let name, email, picture;
     
-    if (token.includes('.')) {
+    try {
       const ticket = await client.verifyIdToken({
         idToken: token,
         audience: '799535285735-0i1hnsr9gphl510fqd6vieprq40f0fc9.apps.googleusercontent.com',
@@ -70,12 +70,13 @@ router.post('/google', async (req, res) => {
       name = payload.name;
       email = payload.email;
       picture = payload.picture;
-    } else {
+    } catch (err) {
+      // Fallback: If it's not a valid ID Token, verify it as an Access Token (such as ya29...)
       const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!response.ok) {
-        throw new Error('Failed to verify access token with Google');
+        throw new Error('Failed to verify access token with Google: ' + response.statusText);
       }
       const payload = await response.json();
       name = payload.name;
