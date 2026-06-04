@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Mail, Search, DollarSign, Clock, ShieldCheck, Users, User, Building2, Check, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import './Home.css';
 
@@ -20,9 +21,9 @@ const Home = () => {
           <button className="btn-cta-outline" onClick={() => navigate('/login')}>I'm hiring talent</button>
         </div>
         <div className="home-stats">
-          <div className="home-stat"><div className="stat-num">12<span>k+</span></div><div className="stat-label">Active seekers</div></div>
-          <div className="home-stat"><div className="stat-num">3<span>k+</span></div><div className="stat-label">Jobs posted</div></div>
-          <div className="home-stat"><div className="stat-num">89<span>%</span></div><div className="stat-label">Match accuracy</div></div>
+          <div className="home-stat"><div className="stat-num">Goal: 10<span>k</span></div><div className="stat-label">Active seekers</div></div>
+          <div className="home-stat"><div className="stat-num">Goal: 1<span>k</span></div><div className="stat-label">Jobs posted</div></div>
+          <div className="home-stat"><div className="stat-num">90<span>%</span></div><div className="stat-label">Target match accuracy</div></div>
           <div className="home-stat"><div className="stat-num">₹99</div><div className="stat-label">To unlock a contact</div></div>
         </div>
       </div>
@@ -34,37 +35,37 @@ const Home = () => {
         <p className="section-sub">The same frustrations, on both sides. HireBridge was built to solve all of them.</p>
         <div className="problem-grid">
           <div className="problem-card">
-            <div className="problem-icon">📨</div>
+            <div className="problem-icon"><Mail size={32} color="#1a56db" /></div>
             <div className="problem-old">Applying into the void</div>
             <div className="problem-new">Get matched, not ignored</div>
             <p>Recruiters only see candidates who already fit their requirements — your profile reaches them automatically.</p>
           </div>
           <div className="problem-card">
-            <div className="problem-icon">🔍</div>
+            <div className="problem-icon"><Search size={32} color="#1a56db" /></div>
             <div className="problem-old">Keyword-filtered out</div>
             <div className="problem-new">Skill-scored, not filtered</div>
             <p>We compare your actual skills against job requirements, not buzzwords. A 75% match beats a keyword mismatch every time.</p>
           </div>
           <div className="problem-card">
-            <div className="problem-icon">💸</div>
+            <div className="problem-icon"><DollarSign size={32} color="#1a56db" /></div>
             <div className="problem-old">Expensive subscriptions</div>
             <div className="problem-new">Pay only when you connect</div>
             <p>No monthly fees, no listing charges. ₹99 for seekers, ₹199 for recruiters — only when you decide to reach out.</p>
           </div>
           <div className="problem-card">
-            <div className="problem-icon">🕐</div>
+            <div className="problem-icon"><Clock size={32} color="#1a56db" /></div>
             <div className="problem-old">Weeks of waiting</div>
             <div className="problem-new">Matches in minutes</div>
             <p>As soon as your profile or job goes live, our algorithm runs instantly. No waiting for applications to trickle in.</p>
           </div>
           <div className="problem-card">
-            <div className="problem-icon">🚪</div>
+            <div className="problem-icon"><ShieldCheck size={32} color="#1a56db" /></div>
             <div className="problem-old">Gatekeepers everywhere</div>
             <div className="problem-new">Direct contact, always</div>
             <p>When you unlock a connection, you get their real email and phone number — no platform DMs, no middlemen.</p>
           </div>
           <div className="problem-card">
-            <div className="problem-icon">🎭</div>
+            <div className="problem-icon"><Users size={32} color="#1a56db" /></div>
             <div className="problem-old">Spray-and-pray hiring</div>
             <div className="problem-new">Only serious connections</div>
             <p>Because both parties pay a small fee to connect, every unlock represents genuine interest — not mass outreach.</p>
@@ -80,26 +81,26 @@ const Home = () => {
           <p className="section-sub">Whether you're looking for work or looking to hire, HireBridge removes the friction from both ends.</p>
           <div className="for-grid">
             <div className="for-card seeker">
-              <div className="for-icon">👤</div>
+              <div className="for-icon"><User size={40} color="#1a56db" /></div>
               <h3>Job Seekers</h3>
               <p>Skip the application queue. Get matched to roles where your skills already fit and reach recruiters directly.</p>
               <ul className="for-features">
-                <li><span>✓</span> Free profile & automatic matching</li>
-                <li><span>✓</span> Browse all matches for free</li>
-                <li><span>✓</span> Unlock recruiter contact for ₹99</li>
-                <li><span>✓</span> No subscriptions, ever</li>
+                <li><span className="yes"><Check size={16} /></span> Free profile & automatic matching</li>
+                <li><span className="yes"><Check size={16} /></span> Browse all matches for free</li>
+                <li><span className="yes"><Check size={16} /></span> Unlock recruiter contact for ₹99</li>
+                <li><span className="yes"><Check size={16} /></span> No subscriptions, ever</li>
               </ul>
               <button className="for-btn" onClick={() => navigate('/login')}>Create free profile &rarr;</button>
             </div>
             <div className="for-card recruiter">
-              <div className="for-icon">🏢</div>
+              <div className="for-icon"><Building2 size={40} color="#1a56db" /></div>
               <h3>Recruiters</h3>
               <p>Post your requirements and get a ranked list of pre-qualified candidates — without waiting for a single application.</p>
               <ul className="for-features">
-                <li><span>✓</span> Free job posting, live instantly</li>
-                <li><span>✓</span> See match scores before paying</li>
-                <li><span>✓</span> Unlock candidate contact for ₹199</li>
-                <li><span>✓</span> No listing fees or monthly plans</li>
+                <li><span className="yes"><Check size={16} /></span> Free job posting, live instantly</li>
+                <li><span className="yes"><Check size={16} /></span> See match scores before paying</li>
+                <li><span className="yes"><Check size={16} /></span> Unlock candidate contact for ₹199</li>
+                <li><span className="yes"><Check size={16} /></span> No listing fees or monthly plans</li>
               </ul>
               <button className="for-btn" onClick={() => navigate('/login')}>Post your first job &rarr;</button>
             </div>
@@ -122,13 +123,12 @@ const Home = () => {
               </tr>
             </thead>
             <tbody>
-              <tr><td>Automatic skill-based matching</td><td><span className="yes">✓</span></td><td><span className="no">✗</span></td></tr>
-              <tr><td>Free to post jobs / create profile</td><td><span className="yes">✓</span></td><td><span className="no">✗</span></td></tr>
-              <tr><td>See match score before paying</td><td><span className="yes">✓</span></td><td><span className="no">✗</span></td></tr>
-              <tr><td>Direct contact details on unlock</td><td><span className="yes">✓</span></td><td><span className="no">✗</span></td></tr>
-              <tr><td>No monthly subscription required</td><td><span className="yes">✓</span></td><td><span className="no">✗</span></td></tr>
-              <tr><td>Both sides verify genuine interest</td><td><span className="yes">✓</span></td><td><span className="no">✗</span></td></tr>
-              <tr><td>Candidate privacy protected until unlock</td><td><span className="yes">✓</span></td><td><span className="no">✗</span></td></tr>
+              <tr><td>Automatic skill-based matching</td><td><span className="yes"><Check size={20} /></span></td><td><span className="no"><X size={20} /></span></td></tr>
+              <tr><td>Massive volume of candidates</td><td><span className="no"><X size={20} /></span></td><td><span className="yes"><Check size={20} /></span></td></tr>
+              <tr><td>See match score before paying</td><td><span className="yes"><Check size={20} /></span></td><td><span className="no"><X size={20} /></span></td></tr>
+              <tr><td>Familiar search filters</td><td><span className="no"><X size={20} /></span></td><td><span className="yes"><Check size={20} /></span></td></tr>
+              <tr><td>No monthly subscription required</td><td><span className="yes"><Check size={20} /></span></td><td><span className="no"><X size={20} /></span></td></tr>
+              <tr><td>Both sides verify genuine interest</td><td><span className="yes"><Check size={20} /></span></td><td><span className="no"><X size={20} /></span></td></tr>
             </tbody>
           </table>
         </div>
