@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Lock, Scale, CreditCard } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import './Pricing.css';
 
@@ -121,17 +122,17 @@ const Pricing = () => {
         <div className="trust-h2">Built to be fair for everyone</div>
         <div className="trust-grid">
           <div className="trust-card">
-            <div className="trust-icon">🔒</div>
+            <div className="trust-icon"><Lock size={32} color="#1a56db" /></div>
             <h4>Mutual privacy</h4>
             <p>Neither party can see the other's contact details until they independently choose to pay. Full control, always.</p>
           </div>
           <div className="trust-card">
-            <div className="trust-icon">⚖️</div>
+            <div className="trust-icon"><Scale size={32} color="#1a56db" /></div>
             <h4>Skin in the game</h4>
             <p>Both sides pay a small fee, which means only genuine connections happen — no spam, no ghost listings.</p>
           </div>
           <div className="trust-card">
-            <div className="trust-icon">💳</div>
+            <div className="trust-icon"><CreditCard size={32} color="#1a56db" /></div>
             <h4>Secure payments</h4>
             <p>All transactions go through Razorpay — PCI-DSS compliant. Your card details are never stored by HireBridge.</p>
           </div>

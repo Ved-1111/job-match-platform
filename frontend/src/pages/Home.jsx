@@ -182,7 +182,7 @@ const Home = () => {
       {/* Final CTA */}
       <div className="home-cta-block" data-aos="fade-up">
         <h2>Your next opportunity is <em>already waiting</em></h2>
-        <p>Join thousands of professionals and recruiters already connecting on HireBridge.</p>
+        <p>Be among the first professionals and recruiters connecting on HireBridge.</p>
         <div className="cta-btns">
           <button className="btn-cta" onClick={() => navigate('/login')}>I'm looking for a job &rarr;</button>
           <button className="btn-cta-outline" onClick={() => navigate('/login')}>I'm hiring talent</button>
@@ -198,6 +198,8 @@ const Home = () => {
           <Link to="/for-recruiters">For Recruiters</Link>
           <Link to="/how-it-works">How it Works</Link>
           <Link to="/pricing">Pricing</Link>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
         </div>
         <div className="footer-copy">&copy; 2025 HireBridge</div>
       </footer>

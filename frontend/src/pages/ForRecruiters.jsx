@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Target, Lock, Zap, DollarSign } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import './ForRecruiters.css';
 
@@ -38,8 +39,8 @@ const ForRecruiters = () => {
         <div className="step">
           <div className="step-num">3</div>
           <div className="step-body">
-            <h3>Unlock and connect for ₹99</h3>
-            <p>When a match looks right, pay a one-time ₹99 fee to reveal the candidate's contact details. No subscriptions, no recruiting agencies — just a direct line to the right person.</p>
+            <h3>Unlock and connect for ₹199</h3>
+            <p>When a match looks right, pay a one-time ₹199 fee to reveal the candidate's contact details. No subscriptions, no recruiting agencies — just a direct line to the right person.</p>
           </div>
         </div>
       </section>
@@ -50,24 +51,24 @@ const ForRecruiters = () => {
           <h2>Built differently, for your benefit</h2>
           <div className="benefit-grid">
             <div className="benefit-card">
-              <div className="benefit-icon">🎯</div>
+              <div className="benefit-icon"><Target size={32} color="#1a56db" /></div>
               <h4>Only relevant candidates</h4>
               <p>You only see candidates whose skills already match. No screening through hundreds of unqualified resumes.</p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">🔒</div>
+              <div className="benefit-icon"><Lock size={32} color="#1a56db" /></div>
               <h4>Candidate privacy respected</h4>
               <p>You can't see their contact info until you choose to unlock the connection, ensuring high-quality, intent-driven outreach.</p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">⚡</div>
+              <div className="benefit-icon"><Zap size={32} color="#1a56db" /></div>
               <h4>Skip the sourcing stage</h4>
               <p>Matched candidates are already interested in your role profile. You skip the cold-outreach stage entirely.</p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">💸</div>
+              <div className="benefit-icon"><DollarSign size={32} color="#1a56db" /></div>
               <h4>Pay only when it counts</h4>
-              <p>Posting a job is free. You only pay ₹99 when you decide a specific matched candidate is worth interviewing.</p>
+              <p>Posting a job is free. You only pay ₹199 when you decide a specific matched candidate is worth interviewing.</p>
             </div>
           </div>
         </div>
@@ -75,7 +76,7 @@ const ForRecruiters = () => {
 
       <div className="cta-block" data-aos="fade-up">
         <h2>Ready to make your next hire?</h2>
-        <p>Join thousands of companies already finding top talent on HireBridge.</p>
+        <p>Be among the first companies finding top talent on HireBridge.</p>
         <button className="btn-cta" onClick={() => navigate('/login')}>Log in to get started &rarr;</button>
         <div className="cta-note">Free to post &middot; No subscription &middot; Pay only when you connect</div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Search, CheckCircle, TrendingUp } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import './HowItWorks.css';
 
@@ -128,21 +129,21 @@ const HowItWorks = () => {
 
           <div className="algo-card">
             <div className="algo-row">
-              <div className="algo-icon" style={{ background: '#e8f0fe' }}>🔍</div>
+              <div className="algo-icon" style={{ background: '#e8f0fe' }}><Search size={24} color="#1a56db" /></div>
               <div className="algo-text">
                 <h4>Skill intersection</h4>
                 <p>We compare the skills on your profile with the skills required by the job. The more overlap, the higher your score. The formula is: skills matched ÷ total job skills × 100.</p>
               </div>
             </div>
             <div className="algo-row">
-              <div className="algo-icon" style={{ background: '#e6f9f1' }}>✅</div>
+              <div className="algo-icon" style={{ background: '#e6f9f1' }}><CheckCircle size={24} color="#0ea86a" /></div>
               <div className="algo-text">
                 <h4>60% threshold</h4>
                 <p>A match is only created when your score reaches 60% or above. This keeps your list focused on roles where you're genuinely competitive — not just loosely related.</p>
               </div>
             </div>
             <div className="algo-row">
-              <div className="algo-icon" style={{ background: '#fef3c7' }}>📈</div>
+              <div className="algo-icon" style={{ background: '#fef3c7' }}><TrendingUp size={24} color="#b45309" /></div>
               <div className="algo-text">
                 <h4>Ranked by fit</h4>
                 <p>Your matches are sorted from highest to lowest score. A 92% match means you have nearly all the required skills — a much stronger position than a 63% match.</p>

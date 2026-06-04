@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Target, Lock, Zap, DollarSign } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import './FindJobs.css';
 
@@ -50,22 +51,22 @@ const FindJobs = () => {
           <h2>Built differently, for your benefit</h2>
           <div className="benefit-grid">
             <div className="benefit-card">
-              <div className="benefit-icon">🎯</div>
+              <div className="benefit-icon"><Target size={32} color="#1a56db" /></div>
               <h4>Only relevant opportunities</h4>
               <p>You only see jobs where your skills already match. No scrolling through hundreds of listings that don't fit.</p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">🔒</div>
+              <div className="benefit-icon"><Lock size={32} color="#1a56db" /></div>
               <h4>Your data stays private</h4>
               <p>Recruiters can't see your contact info until you choose to unlock the connection. You're always in control.</p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">⚡</div>
+              <div className="benefit-icon"><Zap size={32} color="#1a56db" /></div>
               <h4>Skip the application queue</h4>
               <p>Matched recruiters are already interested in your profile. You skip the cold-application stage entirely.</p>
             </div>
             <div className="benefit-card">
-              <div className="benefit-icon">💸</div>
+              <div className="benefit-icon"><DollarSign size={32} color="#1a56db" /></div>
               <h4>Pay only when it counts</h4>
               <p>Creating a profile is free. You only pay ₹99 when you decide a specific match is worth pursuing.</p>
             </div>
@@ -75,7 +76,7 @@ const FindJobs = () => {
 
       <div className="cta-block" data-aos="fade-up">
         <h2>Ready to find your next job?</h2>
-        <p>Join thousands of professionals already getting matched on HireBridge.</p>
+        <p>Be among the first professionals getting matched on HireBridge.</p>
         <button className="btn-cta" onClick={() => navigate('/login')}>Log in to get started &rarr;</button>
         <div className="cta-note">Free to join &middot; No subscription &middot; Pay only when you connect</div>
       </div>

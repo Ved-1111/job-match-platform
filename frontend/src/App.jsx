@@ -18,6 +18,8 @@ import ForRecruiters from './pages/ForRecruiters';
 
 import HowItWorks from './pages/HowItWorks';
 import Pricing from './pages/Pricing';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -55,6 +57,8 @@ function App() {
           <Route path="/for-recruiters" element={<ForRecruiters />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           
           <Route path="/seeker" element={
             <ProtectedRoute allowedRoles={['seeker']}>
