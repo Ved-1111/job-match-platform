@@ -137,7 +137,7 @@ const Home = () => {
       {/* Testimonials */}
       <section className="testimonials" data-aos="fade-up">
         <div className="testimonials-inner">
-          <div className="section-eyebrow">Testimonials</div>
+          <div className="section-eyebrow">Beta user feedback</div>
           <h2 className="section-h2">What people are saying</h2>
           <p className="section-sub">Early users from across India on their HireBridge experience.</p>
           <div className="test-grid">
@@ -200,6 +200,8 @@ const Home = () => {
           <Link to="/pricing">Pricing</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
+          <a href="https://twitter.com/hirebridge" target="_blank" rel="noopener noreferrer">Twitter</a>
+          <a href="https://linkedin.com/company/hirebridge" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         </div>
         <div className="footer-copy">&copy; 2025 HireBridge</div>
       </footer>

@@ -272,6 +272,10 @@
   flex-shrink: 0;
 }
 
+.blue-bg { background: #e8f0fe; }
+.green-bg { background: #e6f9f1; }
+.amber-bg { background: #fef3c7; }
+
 .algo-text h4 {
   font-size: 15px;
   font-weight: 600;
