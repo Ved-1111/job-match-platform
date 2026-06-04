@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import axios from 'axios';
+import { useGoogleLogin } from '@react-oauth/google';
 import Navbar from '../components/Navbar';
 
 // Note: For local dev, hardcoding backend URL. Use env vars in prod.
@@ -37,10 +38,29 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    // TODO: Implement actual Google OAuth here
-    alert("To make this work, you'll need to set up a Google Cloud Project, get an OAuth Client ID, and install @react-oauth/google. Want me to help you set that up?");
-  };
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      setError('');
+      try {
+        const res = await axios.post(`${API_URL}/auth/google`, {
+          token: tokenResponse.access_token,
+          role: formData.role,
+          companyName: formData.companyName
+        });
+        
+        login(res.data.user, res.data.token);
+        
+        if (res.data.user.role === 'seeker') navigate('/seeker');
+        if (res.data.user.role === 'recruiter') navigate('/recruiter');
+        if (res.data.user.role === 'admin') navigate('/admin');
+      } catch (err) {
+        setError(err.response?.data?.message || err.response?.data?.error || 'Google Login failed');
+      }
+    },
+    onError: () => {
+      setError('Google Sign-In was cancelled or failed.');
+    }
+  });
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--surface)' }}>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import useAuthStore from './store/useAuthStore';
@@ -42,39 +43,41 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Toaster position="top-center" />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        
-        {/* Public Pages */}
-        <Route path="/jobs" element={<FindJobs />} />
-        <Route path="/for-recruiters" element={<ForRecruiters />} />
-        <Route path="/how-it-works" element={<HowItWorks />} />
-        <Route path="/pricing" element={<Pricing />} />
-        
-        <Route path="/seeker" element={
-          <ProtectedRoute allowedRoles={['seeker']}>
-            <SeekerPortal />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/recruiter" element={
-          <ProtectedRoute allowedRoles={['recruiter']}>
-            <RecruiterPortal />
-          </ProtectedRoute>
-        } />
+    <GoogleOAuthProvider clientId="799535285735-0i1hnsr9gphl510fqd6vieprq40f0fc9.apps.googleusercontent.com">
+      <BrowserRouter>
+        <Toaster position="top-center" />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          
+          {/* Public Pages */}
+          <Route path="/jobs" element={<FindJobs />} />
+          <Route path="/for-recruiters" element={<ForRecruiters />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/pricing" element={<Pricing />} />
+          
+          <Route path="/seeker" element={
+            <ProtectedRoute allowedRoles={['seeker']}>
+              <SeekerPortal />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/recruiter" element={
+            <ProtectedRoute allowedRoles={['recruiter']}>
+              <RecruiterPortal />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/admin" element={
-          <ProtectedRoute allowedRoles={['admin']}>
-            <AdminDashboard />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/admin" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }
 
