@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const { User, OTP } = require('../index');
 const { OAuth2Client } = require('google-auth-library');
+const validate = require('../middleware/validate');
+const { sendOtpSchema, registerSchema, loginSchema, googleAuthSchema } = require('../validations/auth.validation');
 
 const client = new OAuth2Client('799535285735-0i1hnsr9gphl510fqd6vieprq40f0fc9.apps.googleusercontent.com');
 
@@ -15,7 +17,7 @@ if (!JWT_SECRET) {
 }
 
 // Send OTP
-router.post('/send-otp', async (req, res) => {
+router.post('/send-otp', validate(sendOtpSchema), async (req, res) => {
   try {
     const { email } = req.body;
     
@@ -81,7 +83,7 @@ router.post('/send-otp', async (req, res) => {
 });
 
 // Register User
-router.post('/register', async (req, res) => {
+router.post('/register', validate(registerSchema), async (req, res) => {
   try {
     const { name, email, password, role, skills, companyName, otp } = req.body;
     
@@ -112,7 +114,7 @@ router.post('/register', async (req, res) => {
 });
 
 // Login User
-router.post('/login', async (req, res) => {
+router.post('/login', validate(loginSchema), async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -137,7 +139,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Google Login/Register
-router.post('/google', async (req, res) => {
+router.post('/google', validate(googleAuthSchema), async (req, res) => {
   try {
     const { token, role, companyName } = req.body;
     let name, email, picture;
