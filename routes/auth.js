@@ -8,8 +8,11 @@ const { OAuth2Client } = require('google-auth-library');
 
 const client = new OAuth2Client('799535285735-0i1hnsr9gphl510fqd6vieprq40f0fc9.apps.googleusercontent.com');
 
-// Setup your secret in .env ideally
-const JWT_SECRET = process.env.JWT_SECRET || 'secret123';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error("FATAL ERROR: JWT_SECRET is not defined in .env");
+  process.exit(1);
+}
 
 // Send OTP
 router.post('/send-otp', async (req, res) => {
