@@ -9,6 +9,7 @@ require('./services/matchService'); // Start background cron job
 const app = express();
 
 // Middleware
+app.set('trust proxy', 1); // Trust first proxy (required for rate limiting behind load balancers/Render)
 app.use(helmet());
 app.use(cors({ 
   origin: ['https://job-match-platform-xi.vercel.app', 'http://localhost:5173'] 
