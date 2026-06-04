@@ -10,20 +10,38 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
+  const [step, setStep] = useState(1);
+  const [otp, setOtp] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'seeker', companyName: '' });
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const login = useAuthStore(state => state.login);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMsg('');
     
     try {
       if (isRegistering) {
-        await axios.post(`${API_URL}/auth/register`, formData);
-        alert('Registration successful! Please login.');
-        setIsRegistering(false);
+        if (step === 1) {
+          // Send OTP
+          const res = await axios.post(`${API_URL}/auth/send-otp`, { email: formData.email });
+          setSuccessMsg(res.data.message);
+          if (res.data.previewUrl) {
+            console.log("OTP Email Link:", res.data.previewUrl);
+            alert("Development Mode: Your email provider isn't set up yet, so we sent the OTP to a test mailbox! Check the Browser Console for the link, or copy this: \n\n" + res.data.previewUrl);
+          }
+          setStep(2);
+        } else if (step === 2) {
+          // Complete Registration
+          await axios.post(`${API_URL}/auth/register`, { ...formData, otp });
+          alert('Registration successful! Please login.');
+          setIsRegistering(false);
+          setStep(1);
+          setOtp('');
+        }
       } else {
         const res = await axios.post(`${API_URL}/auth/login`, { email: formData.email, password: formData.password });
         login(res.data.user, res.data.token);
@@ -83,11 +101,30 @@ const Login = () => {
             {error}
           </div>
         )}
+
+        {successMsg && (
+          <div style={{ background: '#dcfce7', color: '#166534', padding: '0.75rem', borderRadius: '6px', marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+            {successMsg}
+          </div>
+        )}
         
         <form onSubmit={handleSubmit}>
-          {isRegistering && (
+          {isRegistering && step === 2 ? (
+            <div>
+              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Enter OTP sent to {formData.email}</label>
+              <input 
+                type="text" 
+                placeholder="6-digit code" 
+                value={otp}
+                onChange={e => setOtp(e.target.value)}
+                required 
+              />
+            </div>
+          ) : (
             <>
-              <div>
+              {isRegistering && (
+                <>
+                  <div>
                 <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Full Name</label>
                 <input 
                   type="text" 
@@ -119,32 +156,34 @@ const Login = () => {
                   />
                 </div>
               )}
+              
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Email Address</label>
+                <input 
+                  type="email" 
+                  placeholder="you@example.com" 
+                  value={formData.email}
+                  onChange={e => setFormData({...formData, email: e.target.value})}
+                  required 
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Password</label>
+                <input 
+                  type="password" 
+                  placeholder="••••••••" 
+                  value={formData.password}
+                  onChange={e => setFormData({...formData, password: e.target.value})}
+                  required 
+                />
+              </div>
             </>
           )}
           
-          <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Email Address</label>
-            <input 
-              type="email" 
-              placeholder="you@example.com" 
-              value={formData.email}
-              onChange={e => setFormData({...formData, email: e.target.value})}
-              required 
-            />
-          </div>
-          <div>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Password</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
-              value={formData.password}
-              onChange={e => setFormData({...formData, password: e.target.value})}
-              required 
-            />
-          </div>
-          
           <button type="submit" className="btn" style={{ width: '100%', marginTop: '1.5rem', padding: '0.875rem' }}>
-            {isRegistering ? 'Register' : 'Log In with Email'}
+            {isRegistering 
+              ? (step === 1 ? 'Send Verification OTP' : 'Verify & Register') 
+              : 'Log In with Email'}
           </button>
         </form>
 
@@ -168,7 +207,12 @@ const Login = () => {
           {isRegistering ? "Already have an account? " : "Don't have an account? "}
           <span 
             style={{ color: 'var(--brand-blue)', cursor: 'pointer', fontWeight: 500 }}
-            onClick={() => setIsRegistering(!isRegistering)}
+            onClick={() => {
+              setIsRegistering(!isRegistering);
+              setStep(1);
+              setError('');
+              setSuccessMsg('');
+            }}
           >
             {isRegistering ? 'Log in here' : 'Sign up here'}
           </span>

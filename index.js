@@ -6,6 +6,7 @@ const Job = require('./models/Job');
 const Match = require('./models/Match');
 const Payment = require('./models/Payment');
 const Notification = require('./models/Notification');
+const OTP = require('./models/OTP');
 
 // Export models as a single module for easy access
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
   Match,
   Payment,
   Notification,
+  OTP,
 };
 
 // Example usage to connect to DB
