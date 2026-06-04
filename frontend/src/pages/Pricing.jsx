@@ -10,13 +10,13 @@ const Pricing = () => {
     <div className="pricing-wrap">
       <Navbar />
 
-      <div className="pricing-hero">
+      <div className="pricing-hero" data-aos="fade-up">
         <div className="pricing-eyebrow">Pricing</div>
         <h1>Pay only when you <em>connect</em></h1>
         <p>No subscriptions. No listing fees. You pay once, only when you decide a match is worth pursuing.</p>
       </div>
 
-      <section className="plans">
+      <section className="plans" data-aos="fade-up">
         <div className="plans-label">Plans</div>
         <h2>Simple pricing for both sides</h2>
         <div className="plans-grid">
@@ -76,7 +76,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <section className="compare">
+      <section className="compare" data-aos="fade-up">
         <div className="compare-inner">
           <div className="section-label">Feature comparison</div>
           <h2 className="section-h2">What's included</h2>
@@ -116,7 +116,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <section className="trust">
+      <section className="trust" data-aos="fade-up">
         <div className="trust-label">Why it works</div>
         <div className="trust-h2">Built to be fair for everyone</div>
         <div className="trust-grid">
@@ -138,7 +138,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <section className="faq">
+      <section className="faq" data-aos="fade-up">
         <div className="faq-inner">
           <div className="faq-label">FAQs</div>
           <div className="faq-h2">Pricing questions answered</div>
@@ -165,7 +165,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <div className="pricing-cta-block">
+      <div className="pricing-cta-block" data-aos="fade-up">
         <h2>Start for free today</h2>
         <p>No credit card needed to sign up. Pay only when you're ready to connect.</p>
         <div className="cta-btns">

@@ -169,7 +169,7 @@ const RecruiterPortal = () => {
           
           {/* Left Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }}>
+            <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }} data-aos="fade-right">
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <Building size={48} color="var(--brand-blue)" />
                 <div>
@@ -200,15 +200,15 @@ const RecruiterPortal = () => {
               <>
                 {/* Stats Row */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }}>
+                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="100">
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Active Jobs</p>
                     <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{myJobs?.length || 0}</h3>
                   </div>
-                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }}>
+                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="200">
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Unlocked Applicants</p>
                     <h3 style={{ color: 'var(--match-green)', fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{unlockedCount}</h3>
                   </div>
-                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }}>
+                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="300">
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Total Spend</p>
                     <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>₹{unlockedCount * 99}</h3>
                   </div>
@@ -223,8 +223,8 @@ const RecruiterPortal = () => {
                     {myJobs?.length === 0 ? (
                       <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>You haven't posted any jobs yet.</div>
                     ) : (
-                      myJobs?.map(job => (
-                        <div key={job._id} className="card" style={{ padding: '1.25rem', marginBottom: 0, position: 'relative' }}>
+                      myJobs?.map((job, idx) => (
+                        <div key={job._id} className="card" style={{ padding: '1.25rem', marginBottom: 0, position: 'relative' }} data-aos="fade-up" data-aos-delay={idx * 100}>
                           <button 
                             onClick={() => deleteJob.mutate(job._id)}
                             disabled={deleteJob.isPending}
@@ -262,10 +262,10 @@ const RecruiterPortal = () => {
                     </div>
                   )}
 
-                  {matches?.sort((a, b) => b.matchScore - a.matchScore).map(match => {
+                  {matches?.sort((a, b) => b.matchScore - a.matchScore).map((match, idx) => {
                     const isHighMatch = match.matchScore >= 80;
                     return (
-                      <div key={match._id} className="card" style={{ marginBottom: 0, padding: '1.5rem' }}>
+                      <div key={match._id} className="card" style={{ marginBottom: 0, padding: '1.5rem' }} data-aos="fade-up" data-aos-delay={idx * 100}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                           <div style={{ display: 'flex', gap: '1rem' }}>
                             <div style={{ width: 48, height: 48, borderRadius: 8, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--brand-blue)' }}>
@@ -321,7 +321,7 @@ const RecruiterPortal = () => {
             )}
 
             {showPostForm && (
-              <div className="card">
+              <div className="card" data-aos="fade-up">
                 <form onSubmit={handleCreateJob}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                     <div style={{ gridColumn: 'span 2' }}>

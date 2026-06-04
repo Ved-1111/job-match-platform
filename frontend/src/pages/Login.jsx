@@ -48,7 +48,7 @@ const Login = () => {
           <p style={{ color: 'var(--text-muted)' }}>Sign in to continue to your dashboard</p>
         </div>
 
-      <div className="card" style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }}>
+      <div className="card" style={{ width: '100%', maxWidth: '420px', padding: '2.5rem' }} data-aos="fade-up">
         <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
           {isRegistering ? 'Create Account' : 'Welcome Back'}
         </h2>

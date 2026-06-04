@@ -11,13 +11,13 @@ const HowItWorks = () => {
     <div className="how-it-works-wrap">
       <Navbar />
 
-      <div className="hiw-hero">
+      <div className="hiw-hero" data-aos="fade-up">
         <div className="hiw-eyebrow">How it Works</div>
         <h1>The <em>right match,</em> for both sides</h1>
         <p>HireBridge works differently — no applications, no guessing. Just skill-based matching that connects the right people at the right time.</p>
       </div>
 
-      <div className="toggle-section">
+      <div className="toggle-section" data-aos="fade-up">
         <div className="toggle">
           <button 
             className={`toggle-btn ${activeTab === 'seeker' ? 'active' : ''}`} 
@@ -34,7 +34,7 @@ const HowItWorks = () => {
         </div>
       </div>
 
-      <div className="journey">
+      <div className="journey" data-aos="fade-up">
         {activeTab === 'seeker' && (
           <div className="journey-panel active">
             <div className="journey-label">Job Seeker Journey</div>
@@ -120,7 +120,7 @@ const HowItWorks = () => {
 
       <hr className="divider" />
 
-      <section className="matching">
+      <section className="matching" data-aos="fade-up">
         <div className="matching-inner">
           <div className="section-label">The matching engine</div>
           <h2 className="section-h2">How we calculate your match score</h2>
@@ -180,7 +180,7 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      <section className="payment">
+      <section className="payment" data-aos="fade-up">
         <div className="section-label" style={{ color: '#f59e0b' }}>Payments</div>
         <h2 className="section-h2">How payments work</h2>
         <p className="section-sub">Both sides pay independently to unlock contact details. Neither party can see the other's information until they choose to pay.</p>
@@ -200,7 +200,7 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      <section className="faq">
+      <section className="faq" data-aos="fade-up">
         <div className="faq-inner">
           <div className="section-label" style={{ color: '#1a6af4' }}>FAQs</div>
           <h2 className="section-h2">Common questions</h2>
@@ -228,7 +228,7 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      <div className="hiw-cta-block">
+      <div className="hiw-cta-block" data-aos="fade-up">
         <h2>Ready to get started?</h2>
         <p>Join HireBridge as a job seeker or recruiter — it's free to sign up.</p>
         <div className="cta-btns">

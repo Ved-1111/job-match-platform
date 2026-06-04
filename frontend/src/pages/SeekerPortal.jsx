@@ -138,7 +138,7 @@ const SeekerPortal = () => {
           
           {/* Left Column (Profile & Settings) */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }}>
+            <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }} data-aos="fade-right">
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <div style={{ position: 'relative', width: 48, height: 48 }}>
                   {profile?.profilePicture ? (
@@ -219,15 +219,15 @@ const SeekerPortal = () => {
 
             {/* Stats Row */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }}>
+              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="100">
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Total Matches</p>
                 <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{matches?.length || 0}</h3>
               </div>
-              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }}>
+              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="200">
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Unlocked</p>
                 <h3 style={{ color: 'var(--match-green)', fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{unlockedCount}</h3>
               </div>
-              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }}>
+              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="300">
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Amount Spent</p>
                 <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>₹{unlockedCount * 99}</h3>
               </div>
@@ -243,10 +243,10 @@ const SeekerPortal = () => {
                 </div>
               )}
 
-              {matches?.sort((a, b) => b.matchScore - a.matchScore).map(match => {
+              {matches?.sort((a, b) => b.matchScore - a.matchScore).map((match, idx) => {
                 const isHighMatch = match.matchScore >= 80;
                 return (
-                  <div key={match._id} className="card" style={{ marginBottom: 0, padding: '1.5rem' }}>
+                  <div key={match._id} className="card" style={{ marginBottom: 0, padding: '1.5rem' }} data-aos="fade-up" data-aos-delay={idx * 100}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div style={{ display: 'flex', gap: '1rem' }}>
                         <div style={{ width: 48, height: 48, borderRadius: 8, background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--brand-blue)' }}>

@@ -10,14 +10,14 @@ const FindJobs = () => {
     <div className="find-jobs-wrap">
       <Navbar />
 
-      <div className="find-jobs-hero">
+      <div className="find-jobs-hero" data-aos="fade-up">
         <div className="hero-eyebrow-find">For Job Seekers</div>
         <h1>Get matched to jobs that <em>fit you</em></h1>
         <p>HireBridge connects your skills directly with recruiters who are actively hiring — no applications, no waiting, no noise.</p>
         <button className="btn-cta" onClick={() => navigate('/login')}>Create your free profile &rarr;</button>
       </div>
 
-      <section className="steps">
+      <section className="steps" data-aos="fade-up">
         <div className="steps-label">How it works</div>
         <h2>Three steps to your next role</h2>
 
@@ -44,7 +44,7 @@ const FindJobs = () => {
         </div>
       </section>
 
-      <section className="benefits">
+      <section className="benefits" data-aos="fade-up">
         <div className="benefits-inner">
           <div className="benefits-label">Why HireBridge</div>
           <h2>Built differently, for your benefit</h2>
@@ -73,7 +73,7 @@ const FindJobs = () => {
         </div>
       </section>
 
-      <div className="cta-block">
+      <div className="cta-block" data-aos="fade-up">
         <h2>Ready to find your next job?</h2>
         <p>Join thousands of professionals already getting matched on HireBridge.</p>
         <button className="btn-cta" onClick={() => navigate('/login')}>Log in to get started &rarr;</button>
