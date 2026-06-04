@@ -156,9 +156,11 @@ const Login = () => {
                   />
                 </div>
               )}
+            </>
+          )}
               
-              <div>
-                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Email Address</label>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem', color: 'var(--ink)' }}>Email Address</label>
                 <input 
                   type="email" 
                   placeholder="you@example.com" 
