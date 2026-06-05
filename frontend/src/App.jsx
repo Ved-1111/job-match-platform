@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -67,12 +68,22 @@ const ScrollProgress = () => {
   return <div className="scroll-progress" ref={barRef} />;
 };
 
+// Scroll to top on every route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
+  return null;
+};
+
 // Animated routes — must be inside BrowserRouter to use useLocation
 const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
     <>
+      <ScrollToTop />
       <ScrollProgress />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
