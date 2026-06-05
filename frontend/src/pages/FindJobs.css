@@ -6,29 +6,38 @@
 }
 
 .find-jobs-hero {
-  background: #0f1923;
-  padding: 5rem 2rem 4rem;
+  background: var(--hero-bg);
+  padding: 120px 0;
   text-align: center;
+  position: relative;
+}
+
+.find-jobs-hero::after, .cta-block::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to bottom, var(--hero-bg), var(--surface));
+  z-index: 10;
 }
 
 .hero-eyebrow-find {
   display: inline-block;
-  background: #1a3a6a;
-  color: #5d9bfc;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  background: var(--hero-accent);
+  color: var(--brand-blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   padding: 5px 14px;
   border-radius: 20px;
   margin-bottom: 1.25rem;
   text-transform: uppercase;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
 }
 
 .find-jobs-hero h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 48px;
-  color: #fff;
-  line-height: 1.15;
   margin-bottom: 1rem;
   max-width: 560px;
   margin-left: auto;
@@ -41,11 +50,11 @@
 }
 
 .find-jobs-hero p {
-  color: #8896a5;
-  font-size: 17px;
+  color: var(--hero-text);
+  font-size: 18px;
   max-width: 480px;
   margin: 0 auto 2rem;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .btn-cta {
@@ -66,7 +75,7 @@
 }
 
 .steps {
-  padding: 4rem 2rem;
+  padding: 88px 0;
   max-width: 800px;
   margin: 0 auto;
 }
@@ -124,8 +133,8 @@
 }
 
 .benefits {
-  background: #fff;
-  padding: 4rem 2rem;
+  background: var(--surface);
+  padding: 88px 0;
 }
 
 .benefits-inner {
@@ -183,21 +192,19 @@
 }
 
 .cta-block {
-  background: #0f1923;
-  padding: 4rem 2rem;
+  background: var(--hero-bg);
+  padding: 120px 0;
   text-align: center;
+  position: relative;
 }
 
 .cta-block h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 36px;
-  color: #fff;
   margin-bottom: 1rem;
 }
 
 .cta-block p {
-  color: #8896a5;
-  font-size: 15px;
+  color: var(--hero-text);
+  font-size: 16px;
   margin-bottom: 2rem;
 }
 
@@ -208,6 +215,11 @@
 }
 
 @media (max-width: 768px) {
+  .find-jobs-hero { padding: 72px 20px; }
+  .steps { padding: 56px 20px; }
+  .benefits { padding: 56px 20px; }
+  .cta-block { padding: 72px 20px; }
+  
   .benefit-grid {
     grid-template-columns: 1fr;
   }

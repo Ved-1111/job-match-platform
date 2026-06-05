@@ -1,14 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap');
 
 :root {
-  --ink: #0f1923;
-  --brand-blue: #1a6af4;
-  --match-green: #0ea86a;
-  --unlock-amber: #f59e0b;
-  --surface: #f7f9fc;
-  --card-bg: #ffffff;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
+  --ink: #0D1117;
+  --brand-blue: #1A6AF4;
+  --match-green: #0EA86A;
+  --unlock-amber: #F59E0B;
+  --surface: #F4F6F9;
+  --card-bg: #FFFFFF;
+  --text-muted: #6B7280;
+  --border-color: #E5E7EB;
+  --hero-bg: #070D18;
+  --hero-mid: #0C1A30;
+  --hero-accent: #1A3A6A;
+  --hero-text: #D1D9E6;
+  --overlay-dark: rgba(7, 13, 24, 0.72);
 }
 
 * {
@@ -18,7 +23,33 @@
   font-family: 'DM Sans', sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 64px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  font-weight: normal;
+}
+
+h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 42px;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-weight: normal;
+}
+
+h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--ink);
+  font-weight: normal;
+}
+
+h4, h5, h6 {
   font-family: 'DM Serif Display', serif;
   color: var(--ink);
   font-weight: normal;
@@ -26,7 +57,13 @@ h1, h2, h3, h4, h5, h6 {
 
 body {
   background-color: var(--surface);
-  color: var(--ink);
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 38px; }
 }
 
 .container {
@@ -37,7 +74,7 @@ body {
 
 .card {
   background: var(--card-bg);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   padding: 2rem;
   margin-bottom: 2rem;
@@ -55,7 +92,9 @@ body {
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;
 }
@@ -163,7 +202,8 @@ input:focus, select:focus, textarea:focus {
   text-decoration: none;
   color: var(--ink);
   font-weight: 500;
-  font-size: 0.9375rem;
+  font-size: 15px;
+  letter-spacing: 0.01em;
   transition: color 0.2s;
 }
 

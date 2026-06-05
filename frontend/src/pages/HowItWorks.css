@@ -6,29 +6,38 @@
 }
 
 .hiw-hero {
-  background: #0a1628;
-  padding: 5rem 2rem 4rem;
+  background: var(--hero-bg);
+  padding: 120px 0;
   text-align: center;
+  position: relative;
+}
+
+.hiw-hero::after, .hiw-cta-block::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to bottom, var(--hero-bg), var(--surface));
+  z-index: 10;
 }
 
 .hiw-eyebrow {
   display: inline-block;
-  background: #132240;
-  color: #5d9bfc;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  background: var(--hero-accent);
+  color: var(--brand-blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   padding: 5px 14px;
   border-radius: 20px;
   margin-bottom: 1.25rem;
   text-transform: uppercase;
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
 }
 
 .hiw-hero h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 48px;
-  color: #fff;
-  line-height: 1.15;
   margin-bottom: 1rem;
   max-width: 600px;
   margin-left: auto;
@@ -41,11 +50,11 @@
 }
 
 .hiw-hero p {
-  color: #8896a5;
-  font-size: 17px;
+  color: var(--hero-text);
+  font-size: 18px;
   max-width: 500px;
   margin: 0 auto;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .toggle-section {
@@ -82,7 +91,7 @@
 }
 
 .journey {
-  padding: 3rem 2rem 4rem;
+  padding: 88px 0;
   max-width: 780px;
   margin: 0 auto;
 }
@@ -207,8 +216,8 @@
 }
 
 .matching {
-  background: #fff;
-  padding: 4rem 2rem;
+  background: var(--surface);
+  padding: 88px 0;
 }
 
 .matching-inner {
@@ -290,7 +299,8 @@
 }
 
 .score-demo {
-  background: #0f1923;
+  background: var(--hero-mid);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 1.5rem;
   margin-top: 1.5rem;
@@ -358,7 +368,7 @@
 }
 
 .payment {
-  padding: 4rem 2rem;
+  padding: 88px 0;
   max-width: 780px;
   margin: 0 auto;
 }
@@ -413,8 +423,8 @@
 }
 
 .faq {
-  background: #fff;
-  padding: 4rem 2rem;
+  background: var(--surface);
+  padding: 88px 0;
 }
 
 .faq-inner {
@@ -445,21 +455,19 @@
 }
 
 .hiw-cta-block {
-  background: #0a1628;
-  padding: 4rem 2rem;
+  background: var(--hero-bg);
+  padding: 120px 0;
   text-align: center;
+  position: relative;
 }
 
 .hiw-cta-block h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 36px;
-  color: #fff;
   margin-bottom: 1rem;
 }
 
 .hiw-cta-block p {
-  color: #8896a5;
-  font-size: 15px;
+  color: var(--hero-text);
+  font-size: 16px;
   margin-bottom: 2rem;
 }
 
@@ -501,6 +509,13 @@
 }
 
 @media (max-width: 768px) {
+  .hiw-hero { padding: 72px 20px; }
+  .journey { padding: 56px 20px; }
+  .matching { padding: 56px 20px; }
+  .payment { padding: 56px 20px; }
+  .faq { padding: 56px 20px; }
+  .hiw-cta-block { padding: 72px 20px; }
+  
   .pay-grid {
     grid-template-columns: 1fr;
   }
