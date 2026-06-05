@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
+import { CheckCircle } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import './Login.css';
 
 // Note: For local dev, hardcoding backend URL. Use env vars in prod.
@@ -18,6 +22,24 @@ const Login = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const login = useAuthStore(state => state.login);
   const navigate = useNavigate();
+
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.fromTo(
+      '.reveal',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1, y: 0,
+        duration: 0.85,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.reveal',
+          start: 'top 88%',
+          toggleActions: 'play none none none'
+        }
+      }
+    );
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,17 +103,25 @@ const Login = () => {
   });
 
   return (
-    <div className="login-page-wrap">
-      <Navbar />
-      <div className="login-content">
-        <div className="login-header">
-          <h1>
+    <div className="login-page">
+      <div className="login-left">
+        <div className="hero-bg-layer"></div>
+        <div className="hero-grid-overlay"></div>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <h1 className="login-brand" onClick={() => navigate('/')} style={{ fontFamily: 'DM Serif Display', fontSize: '64px', margin: '0 0 1rem 0' }}>
             Hire<span style={{ color: 'var(--brand-blue)' }}>Bridge</span>
           </h1>
-          <p>Sign in to continue to your dashboard</p>
+          <p className="login-tagline">The bridge between talent and opportunity.</p>
+          <ul className="login-proofs">
+            <li><CheckCircle size={20} color="#0ea86a" /> Skill-based matching engine</li>
+            <li><CheckCircle size={20} color="#0ea86a" /> 10,000+ active job seekers</li>
+            <li><CheckCircle size={20} color="#0ea86a" /> Pay only when you connect</li>
+          </ul>
         </div>
-
-      <div className="card login-card" data-aos="fade-up">
+      </div>
+      
+      <div className="login-right">
+        <div className="card login-card reveal">
         <h2>
           {isRegistering ? 'Create Account' : 'Welcome Back'}
         </h2>
@@ -219,7 +249,7 @@ const Login = () => {
             {isRegistering ? 'Log in here' : 'Sign up here'}
           </span>
         </p>
-      </div>
+        </div>
       </div>
     </div>
   );

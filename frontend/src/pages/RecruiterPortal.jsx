@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
@@ -6,6 +7,9 @@ import { Building, Lock, CheckCircle2, PlusCircle, Users, LogOut, Bell, Trash2 }
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import PaymentModal from '../components/PaymentModal';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 
 const TECH_SKILLS = [
   "Agile", "Angular", "Ansible", "Ant Design", "Apache", "Artificial Intelligence", "ASP.NET", "AWS", "Azure", 
@@ -37,21 +41,9 @@ const TECH_JOB_TITLES = [
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const MatchRing = ({ score }) => {
-  const radius = 20;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
-  const isHighMatch = score >= 80;
-  const color = isHighMatch ? 'var(--match-green)' : '#b45309';
-
   return (
-    <div style={{ position: 'relative', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <svg width="50" height="50" style={{ transform: 'rotate(-90deg)', position: 'absolute' }}>
-        <circle cx="25" cy="25" r={radius} stroke="#e5e7eb" strokeWidth="4" fill="none" />
-        <circle cx="25" cy="25" r={radius} stroke={color} strokeWidth="4" fill="none" 
-          strokeDasharray={circumference} strokeDashoffset={offset} 
-          style={{ transition: 'stroke-dashoffset 1s ease-in-out' }} strokeLinecap="round" />
-      </svg>
-      <span style={{ fontSize: '12px', fontWeight: 700, color }}>{Math.round(score)}%</span>
+    <div className="match-score-badge" data-pct={score}>
+      <span>{Math.round(score)}%</span>
     </div>
   );
 };
@@ -59,6 +51,7 @@ const MatchRing = ({ score }) => {
 const RecruiterPortal = () => {
   const { token, user, logout } = useAuthStore();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   
   const [jobForm, setJobForm] = useState({ title: '', requiredSkills: [], salaryRange: '', location: '', jobType: 'Full-time' });
   const [showPostForm, setShowPostForm] = useState(false);
@@ -66,6 +59,60 @@ const RecruiterPortal = () => {
   const [customSkill, setCustomSkill] = useState('');
   const [customJobTitle, setCustomJobTitle] = useState('');
   const [paymentModal, setPaymentModal] = useState({ isOpen: false, matchId: null });
+
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Sidebar reveal
+    gsap.fromTo(
+      '.sidebar-card',
+      { opacity: 0, x: -40 },
+      { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '.sidebar-card', start: 'top 90%' } }
+    );
+
+    // Stats Stagger
+    gsap.fromTo(
+      '.stat-card',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: '.stat-card', start: 'top 90%' } }
+    );
+
+    // Job Cards Stagger
+    gsap.fromTo(
+      '.job-card',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: '.job-card', start: 'top 90%' } }
+    );
+
+    // Matches Stagger
+    gsap.fromTo(
+      '.match-card',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: '.match-card', start: 'top 90%' } }
+    );
+
+    // Post Form Reveal
+    if (showPostForm) {
+      gsap.fromTo(
+        '.post-form-card',
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
+      );
+    }
+  }, [showPostForm]);
+
+  useGSAP(() => {
+    if (!showPostForm) {
+      const badges = document.querySelectorAll('.match-score-badge');
+      badges.forEach(badge => {
+        const pct = badge.getAttribute('data-pct');
+        gsap.fromTo(badge, 
+          { '--pct': 0 }, 
+          { '--pct': pct, duration: 1.5, ease: 'power3.out' }
+        );
+      });
+    }
+  }, [showPostForm]);
 
   const api = axios.create({
     baseURL: API_URL,
@@ -164,33 +211,34 @@ const RecruiterPortal = () => {
     <div style={{ background: '#f7f9fc', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif" }}>
       <Navbar />
       
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
-          
-          {/* Left Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }} data-aos="fade-right">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <Building size={48} color="var(--brand-blue)" />
-                <div>
-                  <h4 style={{ margin: 0 }}>{user?.name}</h4>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Recruiter</p>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <button className="btn-secondary" onClick={() => setShowPostForm(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem', border: 'none', background: !showPostForm ? '#eff6ff' : '#fff', color: !showPostForm ? 'var(--brand-blue)' : 'var(--ink)', justifyContent: 'flex-start', borderRadius: '8px', fontWeight: 500, boxShadow: !showPostForm ? '0 0 0 1px var(--brand-blue)' : '0 1px 3px rgba(0,0,0,0.05)' }}>
-                <Users size={20} /> Dashboard Home
-              </button>
-              <button className="btn-secondary" onClick={() => setShowPostForm(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem', border: 'none', background: showPostForm ? '#eff6ff' : '#fff', color: showPostForm ? 'var(--brand-blue)' : 'var(--ink)', justifyContent: 'flex-start', borderRadius: '8px', fontWeight: 500, boxShadow: showPostForm ? '0 0 0 1px var(--brand-blue)' : '0 1px 3px rgba(0,0,0,0.05)' }}>
-                <PlusCircle size={20} /> Post a New Job
-              </button>
+      <div className="portal-layout">
+        <aside className="portal-sidebar sidebar-card">
+          <div className="sidebar-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <Building size={48} color="var(--brand-blue)" />
+            <div>
+              <h4 style={{ margin: 0, fontFamily: 'DM Sans', fontWeight: 600 }}>{user?.name}</h4>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>Recruiter</p>
             </div>
           </div>
 
-          {/* Right Column */}
-          <div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <button className={`portal-nav-item ${!showPostForm ? 'active' : ''}`} onClick={() => setShowPostForm(false)}>
+              <Users size={20} />
+              <span>Dashboard Home</span>
+            </button>
+            <button className={`portal-nav-item ${showPostForm ? 'active' : ''}`} onClick={() => setShowPostForm(true)}>
+              <PlusCircle size={20} />
+              <span>Post a New Job</span>
+            </button>
+          </div>
+
+          <button className="portal-nav-item" onClick={() => { logout(); navigate('/'); }} style={{ marginTop: 'auto', color: '#b91c1c' }}>
+            <LogOut size={20} />
+            <span>Logout</span>
+          </button>
+        </aside>
+
+        <div style={{ padding: '2rem 1rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem' }}>{showPostForm ? 'Post a New Job' : 'Candidate Matches'}</h2>
               <Bell color="var(--text-muted)" cursor="pointer" />
@@ -200,15 +248,15 @@ const RecruiterPortal = () => {
               <>
                 {/* Stats Row */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="100">
+                  <div className="card stat-card" style={{ padding: '1.5rem', marginBottom: 0 }}>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Active Jobs</p>
                     <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{myJobs?.length || 0}</h3>
                   </div>
-                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="200">
+                  <div className="card stat-card" style={{ padding: '1.5rem', marginBottom: 0 }}>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Unlocked Applicants</p>
                     <h3 style={{ color: 'var(--match-green)', fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{unlockedCount}</h3>
                   </div>
-                  <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="300">
+                  <div className="card stat-card" style={{ padding: '1.5rem', marginBottom: 0 }}>
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Total Spend</p>
                     <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>₹{unlockedCount * 99}</h3>
                   </div>
@@ -224,7 +272,7 @@ const RecruiterPortal = () => {
                       <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>You haven't posted any jobs yet.</div>
                     ) : (
                       myJobs?.map((job, idx) => (
-                        <div key={job._id} className="card" style={{ padding: '1.25rem', marginBottom: 0, position: 'relative' }} data-aos="fade-up" data-aos-delay={idx * 100}>
+                        <div key={job._id} className="card job-card" style={{ padding: '1.25rem', marginBottom: 0, position: 'relative' }}>
                           <button 
                             onClick={() => deleteJob.mutate(job._id)}
                             disabled={deleteJob.isPending}
@@ -262,10 +310,10 @@ const RecruiterPortal = () => {
                     </div>
                   )}
 
-                  {matches?.sort((a, b) => b.matchScore - a.matchScore).map((match, idx) => {
+                  {[...(matches || [])].sort((a, b) => b.matchScore - a.matchScore).map((match, idx) => {
                     const isHighMatch = match.matchScore >= 80;
                     return (
-                      <div key={match._id} className="card" style={{ marginBottom: 0, padding: '1.5rem' }} data-aos="fade-up" data-aos-delay={idx * 100}>
+                      <div key={match._id} className="card match-card" style={{ marginBottom: 0, padding: '1.5rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                           <div style={{ display: 'flex', gap: '1rem' }}>
                             <div style={{ width: 48, height: 48, borderRadius: 8, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--brand-blue)' }}>
@@ -321,7 +369,7 @@ const RecruiterPortal = () => {
             )}
 
             {showPostForm && (
-              <div className="card" data-aos="fade-up">
+              <div className="card post-form-card">
                 <form onSubmit={handleCreateJob}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                     <div style={{ gridColumn: 'span 2' }}>
@@ -409,7 +457,6 @@ const RecruiterPortal = () => {
                 </form>
               </div>
             )}
-          </div>
         </div>
       </div>
       

@@ -2,22 +2,103 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Scale, CreditCard } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import './Pricing.css';
 
 const Pricing = () => {
   const navigate = useNavigate();
+  const heroRef = React.useRef(null);
+
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Headline Animation
+    if (heroRef.current) {
+      gsap.fromTo(
+        heroRef.current.querySelectorAll('.word'),
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: 'power2.out', delay: 0.2 }
+      );
+      gsap.fromTo('.hero-em', 
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.4)', delay: 0.55 }
+      );
+    }
+
+    // Global Reveal for sections
+    gsap.utils.toArray('.reveal').forEach((section) => {
+      gsap.fromTo(
+        section,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.85,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 88%',
+            onEnter: () => section.classList.add('is-revealed'),
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // Hero Parallax
+    gsap.to('.hero-bg-layer', {
+      yPercent: -30,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.pricing-hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    // Grids Stagger
+    const grids = [
+      { trigger: '.plans-grid', target: '.plan-card' },
+      { trigger: '.trust-grid', target: '.trust-card' }
+    ];
+    grids.forEach(({ trigger, target }) => {
+      gsap.fromTo(
+        target,
+        { opacity: 0, y: 48, rotateX: 4 },
+        {
+          opacity: 1, y: 0, rotateX: 0,
+          duration: 0.7,
+          stagger: 0.09,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: trigger, start: 'top 82%' }
+        }
+      );
+    });
+  }, []);
 
   return (
     <div className="pricing-wrap">
       <Navbar />
 
-      <div className="pricing-hero" data-aos="fade-up">
-        <div className="pricing-eyebrow">Pricing</div>
-        <h1>Pay only when you <em>connect</em></h1>
-        <p>No subscriptions. No listing fees. You pay once, only when you decide a match is worth pursuing.</p>
+      <div className="pricing-hero">
+        <div className="hero-bg-layer"></div>
+        <div className="hero-grid-overlay"></div>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="pricing-eyebrow">Pricing</div>
+          <h1 ref={heroRef}>
+            <span className="word">Pay </span>
+            <span className="word">only </span>
+            <span className="word">when </span>
+            <span className="word">you </span>
+            <em className="hero-em">connect</em>
+          </h1>
+          <p>No subscriptions. No listing fees. You pay once, only when you decide a match is worth pursuing.</p>
+        </div>
       </div>
 
-      <section className="plans" data-aos="fade-up">
+      <section className="plans reveal">
         <div className="plans-label">Plans</div>
         <h2>Simple pricing for both sides</h2>
         <div className="plans-grid">
@@ -26,7 +107,7 @@ const Pricing = () => {
             <div className="plan-name">Seeker Plan</div>
             <div className="plan-price">
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <div className="free-label">Free</div>
+                <div className="free-label" style={{ borderBottom: '2px solid var(--match-green)' }}>Free</div>
                 <span style={{ fontSize: '13px', color: '#8896a5' }}>to join</span>
               </div>
               <div style={{ marginTop: '10px', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
@@ -53,7 +134,7 @@ const Pricing = () => {
             <div className="plan-name">Recruiter Plan</div>
             <div className="plan-price">
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <div className="free-label">Free</div>
+                <div className="free-label" style={{ borderBottom: '2px solid var(--brand-blue)' }}>Free</div>
                 <span style={{ fontSize: '13px', color: '#8896a5' }}>to post jobs</span>
               </div>
               <div style={{ marginTop: '10px', display: 'flex', alignItems: 'baseline', gap: '4px' }}>
@@ -77,7 +158,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <section className="compare" data-aos="fade-up">
+      <section className="compare reveal">
         <div className="compare-inner">
           <div className="section-label">Feature comparison</div>
           <h2 className="section-h2">What's included</h2>
@@ -117,7 +198,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <section className="trust" data-aos="fade-up">
+      <section className="trust reveal">
         <div className="trust-label">Why it works</div>
         <div className="trust-h2">Built to be fair for everyone</div>
         <div className="trust-grid">
@@ -139,7 +220,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <section className="faq" data-aos="fade-up">
+      <section className="faq reveal">
         <div className="faq-inner">
           <div className="faq-label">FAQs</div>
           <div className="faq-h2">Pricing questions answered</div>
@@ -166,7 +247,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <div className="pricing-cta-block" data-aos="fade-up">
+      <div className="pricing-cta-block reveal">
         <h2>Start for free today</h2>
         <p>No credit card needed to sign up. Pay only when you're ready to connect.</p>
         <div className="cta-btns">

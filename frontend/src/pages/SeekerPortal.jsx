@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
@@ -6,6 +7,9 @@ import { Bell, Lock, Unlock, UserCircle, Briefcase, Settings, LogOut, CheckCircl
 import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import PaymentModal from '../components/PaymentModal';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 
 const TECH_SKILLS = [
   "Agile", "Angular", "Ansible", "Ant Design", "Apache", "Artificial Intelligence", "ASP.NET", "AWS", "Azure", 
@@ -26,21 +30,9 @@ const TECH_SKILLS = [
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const MatchRing = ({ score }) => {
-  const radius = 20;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
-  const isHighMatch = score >= 80;
-  const color = isHighMatch ? 'var(--match-green)' : '#b45309';
-
   return (
-    <div style={{ position: 'relative', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <svg width="50" height="50" style={{ transform: 'rotate(-90deg)', position: 'absolute' }}>
-        <circle cx="25" cy="25" r={radius} stroke="#e5e7eb" strokeWidth="4" fill="none" />
-        <circle cx="25" cy="25" r={radius} stroke={color} strokeWidth="4" fill="none" 
-          strokeDasharray={circumference} strokeDashoffset={offset} 
-          style={{ transition: 'stroke-dashoffset 1s ease-in-out' }} strokeLinecap="round" />
-      </svg>
-      <span style={{ fontSize: '12px', fontWeight: 700, color }}>{Math.round(score)}%</span>
+    <div className="match-score-badge" data-pct={score}>
+      <span>{Math.round(score)}%</span>
     </div>
   );
 };
@@ -48,9 +40,48 @@ const MatchRing = ({ score }) => {
 const SeekerPortal = () => {
   const { token, user, logout } = useAuthStore();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [selectedSkill, setSelectedSkill] = useState('');
   const [customSkill, setCustomSkill] = useState('');
   const [paymentModal, setPaymentModal] = useState({ isOpen: false, matchId: null });
+
+  const [activeTab, setActiveTab] = useState('feed');
+
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.fromTo(
+      '.sidebar-card',
+      { opacity: 0, x: -40 },
+      { opacity: 1, x: 0, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '.sidebar-card', start: 'top 90%' } }
+    );
+
+    gsap.fromTo(
+      '.stat-card',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: '.stat-card', start: 'top 90%' } }
+    );
+
+    gsap.fromTo(
+      '.match-card',
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: '.match-card', start: 'top 90%' } }
+    );
+  }, [activeTab]);
+
+  // Match score GSAP animation on mount
+  useGSAP(() => {
+    if (activeTab === 'feed') {
+      const badges = document.querySelectorAll('.match-score-badge');
+      badges.forEach(badge => {
+        const pct = badge.getAttribute('data-pct');
+        gsap.fromTo(badge, 
+          { '--pct': 0 }, 
+          { '--pct': pct, duration: 1.5, ease: 'power3.out' }
+        );
+      });
+    }
+  }, [activeTab]);
 
   const api = axios.create({
     baseURL: API_URL,
@@ -133,37 +164,55 @@ const SeekerPortal = () => {
     <div style={{ background: '#f7f9fc', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif" }}>
       <Navbar />
       
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '2rem' }}>
+      <div className="portal-layout">
+        <aside className="portal-sidebar sidebar-card">
+          <div className="sidebar-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ position: 'relative', width: 48, height: 48 }}>
+              {profile?.profilePicture ? (
+                <img src={profile.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
+              ) : (
+                <UserCircle size={48} color="var(--brand-blue)" />
+              )}
+              <label style={{ position: 'absolute', bottom: -4, right: -4, background: 'var(--brand-blue)', color: 'white', borderRadius: '50%', padding: '2px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                <Plus size={12} strokeWidth={3} />
+                <input type="file" accept="image/png, image/jpeg" style={{ display: 'none' }} onChange={handleProfilePicUpload} />
+              </label>
+            </div>
+            <div>
+              <h4 style={{ margin: 0, fontFamily: 'DM Sans', fontWeight: 600 }}>{user?.name}</h4>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>Job Seeker</p>
+            </div>
+          </div>
           
-          {/* Left Column (Profile & Settings) */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }} data-aos="fade-right">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                <div style={{ position: 'relative', width: 48, height: 48 }}>
-                  {profile?.profilePicture ? (
-                    <img src={profile.profilePicture} alt="Profile" style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
-                  ) : (
-                    <UserCircle size={48} color="var(--brand-blue)" />
-                  )}
-                  <label style={{ position: 'absolute', bottom: -4, right: -4, background: 'var(--brand-blue)', color: 'white', borderRadius: '50%', padding: '2px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-                    <Plus size={12} strokeWidth={3} />
-                    <input type="file" accept="image/png, image/jpeg" style={{ display: 'none' }} onChange={handleProfilePicUpload} />
-                  </label>
-                </div>
-                <div>
-                  <h4 style={{ margin: 0 }}>{user?.name}</h4>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Job Seeker</p>
-                </div>
-              </div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <button className={`portal-nav-item ${activeTab === 'feed' ? 'active' : ''}`} onClick={() => setActiveTab('feed')}>
+              <Briefcase size={20} />
+              <span>Matches Feed</span>
+            </button>
+            <button className={`portal-nav-item ${activeTab === 'skills' ? 'active' : ''}`} onClick={() => setActiveTab('skills')}>
+              <Settings size={20} />
+              <span>Manage Skills</span>
+            </button>
+          </div>
+
+          <button className="portal-nav-item" onClick={() => { logout(); navigate('/'); }} style={{ marginTop: 'auto', color: '#b91c1c' }}>
+            <LogOut size={20} />
+            <span>Logout</span>
+          </button>
+        </aside>
+
+        <div style={{ padding: '2rem 1rem' }}>
+          {activeTab === 'skills' && (
+            <div className="card stat-card" style={{ maxWidth: '600px' }}>
+              <h3 style={{ marginBottom: '1.5rem', fontFamily: "'DM Serif Display', serif" }}>Manage Your Skills</h3>
               
-              <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{ marginBottom: '2rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', marginBottom: '0.5rem' }}>
                   <span>Profile Completion</span>
                   <strong>{profile?.skills?.length > 0 ? '100%' : '50%'}</strong>
                 </div>
                 <div style={{ width: '100%', height: '8px', background: '#e5e7eb', borderRadius: '4px' }}>
-                  <div style={{ width: profile?.skills?.length > 0 ? '100%' : '50%', height: '100%', background: 'var(--match-green)', borderRadius: '4px' }}></div>
+                  <div style={{ width: profile?.skills?.length > 0 ? '100%' : '50%', height: '100%', background: 'var(--match-green)', borderRadius: '4px', transition: 'width 0.3s' }}></div>
                 </div>
               </div>
 
@@ -199,7 +248,7 @@ const SeekerPortal = () => {
                 </button>
               </form>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.5rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '2rem' }}>
                 {profile?.skills?.map(skill => (
                   <span key={skill} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: '#eff6ff', color: 'var(--brand-blue)', padding: '0.35rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 600 }}>
                     {skill}
@@ -208,10 +257,10 @@ const SeekerPortal = () => {
                 ))}
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Right Column (Matches Feed) */}
-          <div>
+          {activeTab === 'feed' && (
+            <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem' }}>Your Matches Feed</h2>
               <Bell color="var(--text-muted)" cursor="pointer" />
@@ -219,15 +268,15 @@ const SeekerPortal = () => {
 
             {/* Stats Row */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="100">
+              <div className="card stat-card" style={{ padding: '1.5rem', marginBottom: 0 }}>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Total Matches</p>
                 <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{matches?.length || 0}</h3>
               </div>
-              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="200">
+              <div className="card stat-card" style={{ padding: '1.5rem', marginBottom: 0 }}>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Unlocked</p>
                 <h3 style={{ color: 'var(--match-green)', fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>{unlockedCount}</h3>
               </div>
-              <div className="card" style={{ padding: '1.5rem', marginBottom: 0 }} data-aos="fade-up" data-aos-delay="300">
+              <div className="card stat-card" style={{ padding: '1.5rem', marginBottom: 0 }}>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontWeight: 500 }}>Amount Spent</p>
                 <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem', marginTop: '0.5rem' }}>₹{unlockedCount * 99}</h3>
               </div>
@@ -243,10 +292,10 @@ const SeekerPortal = () => {
                 </div>
               )}
 
-              {matches?.sort((a, b) => b.matchScore - a.matchScore).map((match, idx) => {
+              {[...(matches || [])].sort((a, b) => b.matchScore - a.matchScore).map((match, idx) => {
                 const isHighMatch = match.matchScore >= 80;
                 return (
-                  <div key={match._id} className="card" style={{ marginBottom: 0, padding: '1.5rem' }} data-aos="fade-up" data-aos-delay={idx * 100}>
+                  <div key={match._id} className="card match-card" style={{ marginBottom: 0, padding: '1.5rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div style={{ display: 'flex', gap: '1rem' }}>
                         <div style={{ width: 48, height: 48, borderRadius: 8, background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '1.25rem', color: 'var(--brand-blue)' }}>
@@ -298,7 +347,8 @@ const SeekerPortal = () => {
                 );
               })}
             </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
       

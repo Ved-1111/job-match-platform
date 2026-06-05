@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
 import { LayoutDashboard, Users, Briefcase, Activity, LogOut } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -21,81 +22,80 @@ const AdminDashboard = () => {
   });
 
   return (
-    <div className="portal-layout">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div style={{ marginBottom: '2rem' }}>
-          <h2>Hire<span style={{ color: 'var(--brand-blue)' }}>Bridge</span></h2>
-        </div>
+    <div style={{ background: '#f7f9fc', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif" }}>
+      <Navbar />
 
-        <div className="card" style={{ marginBottom: '1rem', padding: '1.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <div className="portal-layout">
+        <aside className="portal-sidebar sidebar-card">
+          <div className="sidebar-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <Activity size={48} color="var(--brand-blue)" />
             <div>
-              <h4 style={{ margin: 0 }}>{user?.name}</h4>
-              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Admin</p>
+              <h4 style={{ margin: 0, fontFamily: 'DM Sans', fontWeight: 600 }}>{user?.name}</h4>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', margin: 0 }}>Admin</p>
             </div>
           </div>
-        </div>
 
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <button className="btn-secondary" onClick={() => setActiveTab('overview')} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', border: 'none', background: activeTab === 'overview' ? '#eff6ff' : 'transparent', color: activeTab === 'overview' ? 'var(--brand-blue)' : 'var(--ink)', justifyContent: 'flex-start' }}>
-            <LayoutDashboard size={18} /> Platform Overview
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <button className={`portal-nav-item ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')}>
+              <LayoutDashboard size={20} />
+              <span>Platform Overview</span>
+            </button>
+          </div>
+
+          <button className="portal-nav-item" onClick={logout} style={{ marginTop: 'auto', color: '#b91c1c' }}>
+            <LogOut size={20} />
+            <span>Logout</span>
           </button>
-          <button className="btn-secondary" onClick={logout} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem 1rem', border: 'none', justifyContent: 'flex-start', color: '#ef4444' }}>
-            <LogOut size={18} /> Logout
-          </button>
-        </nav>
-      </aside>
+        </aside>
 
-      {/* Main Content */}
-      <main>
-        <div style={{ marginBottom: '2rem' }}>
-          <h2>Platform Overview</h2>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
-          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '12px' }}>
-              <Users size={32} color="var(--brand-blue)" />
-            </div>
-            <div>
-              <p style={{ color: 'var(--text-muted)' }}>Total Users</p>
-              <h2 style={{ fontSize: '2.5rem', margin: 0 }}>{stats?.totalUsers || 0}</h2>
-            </div>
+        <div style={{ padding: '2rem 1rem' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '2rem' }}>Platform Overview</h2>
           </div>
 
-          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '12px' }}>
-              <Briefcase size={32} color="var(--brand-blue)" />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
+            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: 0 }}>
+              <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '12px' }}>
+                <Users size={32} color="var(--brand-blue)" />
+              </div>
+              <div>
+                <p style={{ color: 'var(--text-muted)' }}>Total Users</p>
+                <h2 style={{ fontSize: '2.5rem', margin: 0, fontFamily: "'DM Serif Display', serif" }}>{stats?.totalUsers || 0}</h2>
+              </div>
             </div>
-            <div>
-              <p style={{ color: 'var(--text-muted)' }}>Active Jobs</p>
-              <h2 style={{ fontSize: '2.5rem', margin: 0 }}>{stats?.totalJobs || 0}</h2>
-            </div>
-          </div>
 
-          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ background: '#dcfce7', padding: '1rem', borderRadius: '12px' }}>
-              <Activity size={32} color="var(--match-green)" />
+            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: 0 }}>
+              <div style={{ background: '#eff6ff', padding: '1rem', borderRadius: '12px' }}>
+                <Briefcase size={32} color="var(--brand-blue)" />
+              </div>
+              <div>
+                <p style={{ color: 'var(--text-muted)' }}>Active Jobs</p>
+                <h2 style={{ fontSize: '2.5rem', margin: 0, fontFamily: "'DM Serif Display', serif" }}>{stats?.totalJobs || 0}</h2>
+              </div>
             </div>
-            <div>
-              <p style={{ color: 'var(--text-muted)' }}>Total Matches Created</p>
-              <h2 style={{ fontSize: '2.5rem', margin: 0 }}>{stats?.totalMatches || 0}</h2>
+
+            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: 0 }}>
+              <div style={{ background: '#dcfce7', padding: '1rem', borderRadius: '12px' }}>
+                <Activity size={32} color="var(--match-green)" />
+              </div>
+              <div>
+                <p style={{ color: 'var(--text-muted)' }}>Total Matches Created</p>
+                <h2 style={{ fontSize: '2.5rem', margin: 0, fontFamily: "'DM Serif Display', serif" }}>{stats?.totalMatches || 0}</h2>
+              </div>
             </div>
-          </div>
-          
-          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ background: '#fef3c7', padding: '1rem', borderRadius: '12px' }}>
-              <Activity size={32} color="var(--unlock-amber)" />
-            </div>
-            <div>
-              <p style={{ color: 'var(--text-muted)' }}>Platform Revenue</p>
-              <h2 style={{ fontSize: '2.5rem', margin: 0 }}>₹{stats ? stats.totalMatches * 99 : 0}</h2>
+            
+            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: 0 }}>
+              <div style={{ background: '#fef3c7', padding: '1rem', borderRadius: '12px' }}>
+                <Activity size={32} color="var(--unlock-amber)" />
+              </div>
+              <div>
+                <p style={{ color: 'var(--text-muted)' }}>Platform Revenue</p>
+                <h2 style={{ fontSize: '2.5rem', margin: 0, fontFamily: "'DM Serif Display', serif" }}>₹{stats ? stats.totalMatches * 99 : 0}</h2>
+              </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };

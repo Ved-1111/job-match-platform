@@ -13,16 +13,7 @@
   position: relative;
 }
 
-.home-hero::after, .home-cta-block::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(to bottom, var(--hero-bg), var(--surface));
-  z-index: 10;
-}
+
 
 .home-hero-eyebrow {
   display: inline-flex;
@@ -95,19 +86,16 @@
 .home-stats {
   display: flex;
   justify-content: center;
-  background: var(--hero-mid);
-  border: 0.5px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
   max-width: 580px;
   margin: 0 auto;
-  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .home-stat {
   flex: 1;
   padding: 1.25rem 1rem;
   text-align: center;
-  border-right: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .home-stat:last-child {
@@ -127,22 +115,24 @@
 }
 
 .stat-label {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--hero-text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.45);
   text-transform: uppercase;
 }
 
 /* For who */
 .for-who {
   background: var(--surface);
-  padding: 88px 0;
+  padding: 88px 5%;
 }
 
 .for-who-inner {
   max-width: 860px;
   margin: 0 auto;
+  padding: 0;
 }
 
 .section-eyebrow {
@@ -176,11 +166,23 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
+  align-items: stretch;
 }
 
 .for-card {
   border-radius: 16px;
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.for-card .for-features {
+  flex: 1;
+}
+
+.for-card .for-btn {
+  align-self: flex-start;
+  margin-top: auto;
 }
 
 .for-card.seeker {
@@ -366,6 +368,19 @@ table.vs-table {
   border: 0.5px solid #e2e8f0;
   border-radius: 12px;
   padding: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.test-card::before {
+  content: '\201C';
+  font: 160px/1 'DM Serif Display';
+  color: rgba(26,106,244,0.06);
+  position: absolute; 
+  top: -8px; 
+  left: 12px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .test-quote {
@@ -407,8 +422,9 @@ table.vs-table {
 
 /* companies / trust logos */
 .trust {
-  padding: 3rem 2rem;
-  max-width: 860px;
+  padding: 3rem 0;
+  width: 100%;
+  overflow: hidden;
   margin: 0 auto;
   text-align: center;
 }
@@ -425,15 +441,20 @@ table.vs-table {
 .trust-logos {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
+  gap: 3rem;
+  width: max-content;
+  animation: scroll-x 30s linear infinite;
+}
+
+@keyframes scroll-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .trust-logo {
   font-family: 'DM Serif Display', serif;
   font-size: 18px;
-  color: #c8d5e0;
+  color: #A0ADB8;
   letter-spacing: -0.02em;
 }
 
@@ -529,10 +550,18 @@ table.vs-table {
 }
 
 .problem-card {
-  background: #fff;
-  border: 0.5px solid #e2e8f0;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-top: 3px solid var(--brand-blue);
   border-radius: 14px;
   padding: 1.5rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.problem-card:hover {
+  box-shadow: 0 12px 40px rgba(26,106,244,0.12);
+  transform: translateY(-4px);
 }
 
 .problem-icon {
@@ -549,8 +578,8 @@ table.vs-table {
 }
 
 .problem-new {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
   color: #0f1923;
   margin-bottom: 8px;
 }

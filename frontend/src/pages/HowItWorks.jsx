@@ -2,24 +2,123 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, CheckCircle, TrendingUp, User, Building2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import './HowItWorks.css';
 
 const HowItWorks = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('seeker');
+  const heroRef = React.useRef(null);
+
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Headline Animation
+    if (heroRef.current) {
+      gsap.fromTo(
+        heroRef.current.querySelectorAll('.word'),
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: 'power2.out', delay: 0.2 }
+      );
+      gsap.fromTo('.hero-em', 
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.4)', delay: 0.55 }
+      );
+    }
+
+    // Global Reveal for sections
+    gsap.utils.toArray('.reveal').forEach((section) => {
+      gsap.fromTo(
+        section,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.85,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 88%',
+            onEnter: () => section.classList.add('is-revealed'),
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // Hero Parallax
+    gsap.to('.hero-bg-layer', {
+      yPercent: -30,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hiw-hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    // Match Score Stagger
+    gsap.from('.score-bar', {
+      width: 0,
+      duration: 0.8,
+      stagger: 0.3,
+      ease: 'power2.out',
+      scrollTrigger: { trigger: '.score-demo', start: 'top 85%' }
+    });
+
+    // Pay Grid Stagger
+    gsap.fromTo(
+      '.pay-card',
+      { opacity: 0, y: 48, rotateX: 4 },
+      {
+        opacity: 1, y: 0, rotateX: 0,
+        duration: 0.7,
+        stagger: 0.09,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: '.pay-grid', start: 'top 82%' }
+      }
+    );
+  }, []);
+
+  useGSAP(() => {
+    if (document.querySelector('.timeline')) {
+      const tl = gsap.timeline({ scrollTrigger: { trigger: '.timeline', start: 'top 85%' } });
+      tl.fromTo('.tl-dot', 
+        { scale: 0 }, 
+        { scale: 1, duration: 0.5, ease: 'back.out(1.5)', stagger: 0.18 }
+      , 0);
+      tl.fromTo('.tl-card',
+        { x: 32, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, ease: 'power2.out', stagger: 0.18 }
+      , 0.1);
+    }
+  }, [activeTab]);
 
   return (
     <div className="how-it-works-wrap">
       <Navbar />
 
-      <div className="hiw-hero" data-aos="fade-up">
-        <div className="hiw-eyebrow">How it Works</div>
-        <h1>The <em>right match,</em> for both sides</h1>
-        <p>HireBridge works differently — no applications, no guessing. Just skill-based matching that connects the right people at the right time.</p>
+      <div className="hiw-hero">
+        <div className="hero-bg-layer"></div>
+        <div className="hero-grid-overlay"></div>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="hiw-eyebrow">How it Works</div>
+          <h1 ref={heroRef}>
+            <span className="word">The </span>
+            <em className="hero-em">right match, </em>
+            <span className="word">for </span>
+            <span className="word">both </span>
+            <span className="word">sides</span>
+          </h1>
+          <p>HireBridge works differently — no applications, no guessing. Just skill-based matching that connects the right people at the right time.</p>
+        </div>
       </div>
 
-      <div className="toggle-section" data-aos="fade-up">
+      <div className="toggle-section reveal">
         <div className="toggle">
+          <div className="toggle-indicator" style={{ transform: activeTab === 'seeker' ? 'translateX(0)' : 'translateX(100%)' }}></div>
           <button 
             className={`toggle-btn ${activeTab === 'seeker' ? 'active' : ''}`} 
             onClick={() => setActiveTab('seeker')}
@@ -35,7 +134,7 @@ const HowItWorks = () => {
         </div>
       </div>
 
-      <div className="journey" data-aos="fade-up">
+      <div className="journey reveal">
         {activeTab === 'seeker' && (
           <div className="journey-panel active">
             <div className="journey-label">Job Seeker Journey</div>
@@ -121,7 +220,7 @@ const HowItWorks = () => {
 
       <hr className="divider" />
 
-      <section className="matching" data-aos="fade-up" data-aos-once="false" data-aos-mirror="true">
+      <section className="matching reveal">
         <div className="matching-inner">
           <div className="section-label">The matching engine</div>
           <h2 className="section-h2">How we calculate your match score</h2>
@@ -181,7 +280,7 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      <section className="payment" data-aos="fade-up">
+      <section className="payment reveal">
         <div className="section-label" style={{ color: '#f59e0b' }}>Payments</div>
         <h2 className="section-h2">How payments work</h2>
         <p className="section-sub">Both sides pay independently to unlock contact details. Neither party can see the other's information until they choose to pay.</p>
@@ -201,7 +300,7 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      <section className="faq" data-aos="fade-up">
+      <section className="faq reveal">
         <div className="faq-inner">
           <div className="section-label" style={{ color: '#1a6af4' }}>FAQs</div>
           <h2 className="section-h2">Common questions</h2>
@@ -229,7 +328,7 @@ const HowItWorks = () => {
         </div>
       </section>
 
-      <div className="hiw-cta-block" data-aos="fade-up">
+      <div className="hiw-cta-block reveal">
         <h2>Ready to get started?</h2>
         <p>Join HireBridge as a job seeker or recruiter — it's free to sign up.</p>
         <div className="cta-btns">

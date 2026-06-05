@@ -1,43 +1,71 @@
-.login-page-wrap {
+.login-page {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
-.login-content {
-  flex: 1;
+.login-left {
+  background: var(--hero-bg);
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+.login-brand {
+  cursor: pointer;
+  line-height: 1.1;
+}
+
+.login-tagline {
+  font-size: 20px;
+  color: var(--hero-text);
+  margin-bottom: 3rem;
+  max-width: 480px;
+}
+
+.login-proofs {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.login-proofs li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  color: #c8d5e0;
+}
+
+.login-right {
+  background: var(--surface);
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-}
-
-.login-header {
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.login-header h1 {
-  font-size: 2.5rem;
-  margin: 0;
-  font-family: 'DM Serif Display', serif;
-}
-
-.login-header p {
-  color: var(--text-muted);
+  padding: 40px;
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
-  padding: 2.5rem;
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.04);
 }
 
 .login-card h2 {
   margin-bottom: 1.5rem;
   text-align: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
 }
 
 .login-error {
@@ -68,6 +96,16 @@
   font-weight: 500;
   margin-bottom: 0.5rem;
   color: var(--ink);
+}
+
+.login-form-group input, .login-form-group select {
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.login-form-group input:focus, .login-form-group select:focus {
+  outline: none;
+  border-color: var(--brand-blue) !important;
+  box-shadow: 0 0 0 4px rgba(26,106,244,0.18) !important;
 }
 
 .login-btn-submit {
@@ -104,15 +142,16 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  border-radius: 99px;
+  border-radius: 50px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.875rem;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s;
 }
 
 .btn-google:hover {
-  background: #f9fafb;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
 }
 
 .login-footer-text {
@@ -126,4 +165,16 @@
   color: var(--brand-blue);
   cursor: pointer;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+  .login-left {
+    display: none;
+  }
+  .login-right {
+    padding: 20px;
+  }
 }

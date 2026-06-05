@@ -12,16 +12,7 @@
   position: relative;
 }
 
-.find-jobs-hero::after, .cta-block::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(to bottom, var(--hero-bg), var(--surface));
-  z-index: 10;
-}
+
 
 .hero-eyebrow-find {
   display: inline-block;
@@ -199,6 +190,7 @@
 }
 
 .cta-block h2 {
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 

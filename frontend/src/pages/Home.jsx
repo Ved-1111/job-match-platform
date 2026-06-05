@@ -2,34 +2,179 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Search, DollarSign, Clock, ShieldCheck, Users, User, Building2, Check, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import './Home.css';
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const statRefs = React.useRef([]);
+  const heroRef = React.useRef(null);
+
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Headline Animation
+    if (heroRef.current) {
+      gsap.fromTo(
+        heroRef.current.querySelectorAll('.word'),
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, stagger: 0.06, ease: 'power2.out', delay: 0.2 }
+      );
+      gsap.fromTo('.hero-em',
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.7, ease: 'back.out(1.4)', delay: 0.55 }
+      );
+    }
+
+    // 1. Global Reveal for sections
+    gsap.utils.toArray('.reveal').forEach((section) => {
+      gsap.fromTo(
+        section,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1, y: 0,
+          duration: 0.85,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // 2. Hero Parallax
+    gsap.to('.hero-bg-layer', {
+      yPercent: -30,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.home-hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    // 3. Card Grid Staggers
+    const grids = [
+      { trigger: '.problem-grid', target: '.problem-card' },
+      { trigger: '.for-grid', target: '.for-card' },
+      { trigger: '.test-grid', target: '.test-card' },
+    ];
+    grids.forEach(({ trigger, target }) => {
+      gsap.fromTo(
+        target,
+        { opacity: 0, y: 48, rotateX: 4 },
+        {
+          opacity: 1, y: 0, rotateX: 0,
+          duration: 0.7,
+          stagger: 0.09,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: trigger, start: 'top 82%' }
+        }
+      );
+    });
+
+    // 4. Stat Counter Animation
+    gsap.fromTo('.home-stat',
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, delay: 0.9, ease: 'power2.out', once: true }
+    );
+
+    const targets = [10000, 1000, 90, 99];
+    if (statRefs.current.length > 0) {
+      statRefs.current.forEach((el, index) => {
+        let maxVal = targets[index];
+        let obj = { val: 0 };
+        gsap.to(
+          obj,
+          {
+            val: maxVal,
+            duration: 1.6,
+            delay: 0.9 + (index * 0.15),
+            ease: 'power1.out',
+            onUpdate: function () {
+              if (!el) return;
+              const currentVal = Math.floor(obj.val);
+              if (index === 0) el.innerHTML = `Goal: ${Math.floor(currentVal / 1000) === 10 ? 10 : (currentVal / 1000).toFixed(1)}<span>k</span>`;
+              else if (index === 1) el.innerHTML = `Goal: ${Math.floor(currentVal / 1000) === 1 ? 1 : (currentVal / 1000).toFixed(1)}<span>k</span>`;
+              else if (index === 2) el.innerHTML = `${currentVal}<span>%</span>`;
+              else el.innerHTML = `₹${currentVal}`;
+            },
+            once: true
+          }
+        );
+      });
+    }
+
+    // 5. Horizontal Pin Table
+    let mm = gsap.matchMedia();
+
+    mm.add("(min-width: 769px)", () => {
+      const rows = gsap.utils.toArray('.vs-table tbody tr');
+      gsap.fromTo(rows,
+        { x: 60, opacity: 0 },
+        {
+          x: 0, opacity: 1,
+          stagger: 0.1,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: '.vs-table-wrap',
+            start: 'top 40%',
+            pin: '.vs-pin-container',
+            scrub: true,
+            end: '+=400'
+          }
+        }
+      );
+    });
+
+    mm.add("(max-width: 768px)", () => {
+      gsap.fromTo('.vs-table tbody tr',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, stagger: 0.1, scrollTrigger: { trigger: '.vs-table-wrap', start: 'top 85%' } }
+      );
+    });
+  }, []);
 
   return (
     <div className="home-wrap">
       <Navbar />
 
       {/* Hero */}
-      <div className="home-hero" data-aos="fade-up">
-        <div className="home-hero-eyebrow">🎯 Skill-based job matching</div>
-        <h1>The bridge between <em>talent</em> and opportunity</h1>
-        <p>HireBridge matches job seekers to recruiters by skills — not resumes. Connect directly, pay only when it counts.</p>
-        <div className="home-hero-btns">
-          <button className="btn-cta" onClick={() => navigate('/login')}>Find matching jobs &rarr;</button>
-          <button className="btn-cta-outline" onClick={() => navigate('/login')}>I'm hiring talent</button>
-        </div>
-        <div className="home-stats">
-          <div className="home-stat"><div className="stat-num">Goal: 10<span>k</span></div><div className="stat-label">Active seekers</div></div>
-          <div className="home-stat"><div className="stat-num">Goal: 1<span>k</span></div><div className="stat-label">Jobs posted</div></div>
-          <div className="home-stat"><div className="stat-num">90<span>%</span></div><div className="stat-label">Target match accuracy</div></div>
-          <div className="home-stat"><div className="stat-num">₹99</div><div className="stat-label">To unlock a contact</div></div>
+      <div className="home-hero">
+        <div className="hero-bg-layer"></div>
+        <div className="hero-grid-overlay"></div>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="home-hero-eyebrow">Skill-based job matching</div>
+          <h1 ref={heroRef}>
+            <span className="word">The </span>
+            <span className="word">bridge </span>
+            <span className="word">between </span>
+            <em className="hero-em">talent</em>
+            <span className="word"> and </span>
+            <span className="word">opportunity</span>
+          </h1>
+          <p>HireBridge matches job seekers to recruiters by skills — not resumes. Connect directly, pay only when it counts.</p>
+          <div className="home-hero-btns">
+            <button className="btn-cta" onClick={() => navigate('/login')}>Find matching jobs &rarr;</button>
+            <button className="btn-cta-outline" onClick={() => navigate('/login')}>I'm hiring talent</button>
+          </div>
+          <div className="home-stats">
+            <div className="home-stat"><div className="stat-num" ref={el => statRefs.current[0] = el}>Goal: 0<span>k</span></div><div className="stat-label">Active seekers</div></div>
+            <div className="home-stat"><div className="stat-num" ref={el => statRefs.current[1] = el}>Goal: 0<span>k</span></div><div className="stat-label">Jobs posted</div></div>
+            <div className="home-stat"><div className="stat-num" ref={el => statRefs.current[2] = el}>0<span>%</span></div><div className="stat-label">Target match accuracy</div></div>
+            <div className="home-stat"><div className="stat-num" ref={el => statRefs.current[3] = el}>₹0</div><div className="stat-label">To unlock a contact</div></div>
+          </div>
         </div>
       </div>
 
       {/* Problems we solve */}
-      <section className="problems" data-aos="fade-up">
+      <section className="problems reveal">
         <div className="section-eyebrow">Why HireBridge exists</div>
         <h2 className="section-h2">Hiring is broken. We fixed it.</h2>
         <p className="section-sub">The same frustrations, on both sides. HireBridge was built to solve all of them.</p>
@@ -74,7 +219,7 @@ const Home = () => {
       </section>
 
       {/* For who */}
-      <section className="for-who" data-aos="fade-up">
+      <section className="for-who reveal">
         <div className="for-who-inner">
           <div className="section-eyebrow">Who it's for</div>
           <h2 className="section-h2">Built for both sides</h2>
@@ -109,11 +254,11 @@ const Home = () => {
       </section>
 
       {/* HireBridge vs Traditional */}
-      <section className="vs" data-aos="fade-up">
+      <section className="vs vs-pin-container reveal">
         <div className="section-eyebrow">The difference</div>
         <h2 className="section-h2">HireBridge vs traditional job boards</h2>
         <p className="section-sub">See exactly what makes us different from the platforms you've used before.</p>
-        <div className="vs-table-wrap">
+        <div className="vs-table-wrap" style={{ overflow: 'hidden' }}>
           <table className="vs-table">
             <thead>
               <tr>
@@ -135,7 +280,7 @@ const Home = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="testimonials" data-aos="fade-up">
+      <section className="testimonials reveal">
         <div className="testimonials-inner">
           <div className="section-eyebrow">Beta user feedback</div>
           <h2 className="section-h2">What people are saying</h2>
@@ -167,7 +312,7 @@ const Home = () => {
       </section>
 
       {/* Trusted by */}
-      <section className="trust" data-aos="fade-in">
+      <section className="trust reveal">
         <div className="trust-label">Talent from companies like</div>
         <div className="trust-logos">
           <div className="trust-logo">Zepto</div>
@@ -176,11 +321,18 @@ const Home = () => {
           <div className="trust-logo">Meesho</div>
           <div className="trust-logo">CRED</div>
           <div className="trust-logo">Swiggy</div>
+          {/* Duplicate for infinite loop */}
+          <div className="trust-logo" aria-hidden="true">Zepto</div>
+          <div className="trust-logo" aria-hidden="true">Razorpay</div>
+          <div className="trust-logo" aria-hidden="true">Groww</div>
+          <div className="trust-logo" aria-hidden="true">Meesho</div>
+          <div className="trust-logo" aria-hidden="true">CRED</div>
+          <div className="trust-logo" aria-hidden="true">Swiggy</div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <div className="home-cta-block" data-aos="fade-up">
+      <div className="home-cta-block reveal">
         <h2>Your next opportunity is <em>already waiting</em></h2>
         <p>Be among the first professionals and recruiters connecting on HireBridge.</p>
         <div className="cta-btns">

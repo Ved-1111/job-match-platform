@@ -1,8 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { CreditCard, X, Loader2, CheckCircle2, Lock } from 'lucide-react';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 const PaymentModal = ({ isOpen, onClose, onConfirm, amount }) => {
   const [status, setStatus] = useState('idle'); // idle, processing, success
+  const modalRef = useRef();
+
+  useGSAP(() => {
+    if (isOpen) {
+      gsap.fromTo('.payment-modal-card', 
+        { scale: 0.94, opacity: 0 }, 
+        { scale: 1.0, opacity: 1, duration: 0.3, ease: 'back.out(1.2)' }
+      );
+    }
+  }, [isOpen]);
+
+  useGSAP(() => {
+    if (status === 'success') {
+      gsap.fromTo('.success-icon',
+        { scale: 0.8 },
+        { scale: 1.0, duration: 0.4, ease: 'back.out(1.5)' }
+      );
+      gsap.fromTo('.success-icon circle, .success-icon path',
+        { strokeDasharray: 100, strokeDashoffset: 100 },
+        { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out', stagger: 0.1 }
+      );
+    }
+  }, [status]);
 
   if (!isOpen) return null;
 
@@ -29,11 +54,11 @@ const PaymentModal = ({ isOpen, onClose, onConfirm, amount }) => {
   return (
     <div style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-      background: 'rgba(15, 25, 35, 0.6)',
+      background: 'rgba(7, 13, 24, 0.75)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      zIndex: 9999, backdropFilter: 'blur(4px)'
-    }}>
-      <div className="card" style={{ width: '100%', maxWidth: '400px', padding: '2.5rem 2rem', position: 'relative', margin: '0 1rem', background: '#fff', borderRadius: '16px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+      zIndex: 9999, backdropFilter: 'blur(12px)'
+    }} ref={modalRef}>
+      <div className="card payment-modal-card" style={{ width: '100%', maxWidth: '400px', padding: '2.5rem 2rem', position: 'relative', margin: '0 1rem', background: '#fff', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
         <button onClick={handleClose} disabled={status === 'processing'} style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
           <X size={20} />
         </button>
@@ -72,7 +97,7 @@ const PaymentModal = ({ isOpen, onClose, onConfirm, amount }) => {
 
         {status === 'success' && (
           <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-            <CheckCircle2 size={80} color="var(--match-green)" style={{ margin: '0 auto 1.5rem' }} />
+            <CheckCircle2 size={80} color="var(--match-green)" className="success-icon" pathLength="100" style={{ margin: '0 auto 1.5rem' }} />
             <h3 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '1.75rem', color: 'var(--match-green)' }}>Payment Successful!</h3>
             <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Contact has been unlocked.</p>
           </div>
